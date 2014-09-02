@@ -1,8 +1,11 @@
 ConferenceTracker
 =================
 
-Sample PhoneGap conference application for tracking sessions and speakers. Built with Ionic/AngularJS and using a node.js REST API. 
+Sample PhoneGap conference application. Built with Ionic/AngularJS and using Node/Express for REST services
 
+
+Setting up the Ionic App
+-------------------------
 1. Ensure you have [Ionic](http://ionicframework.com/getting-started/) installed (and are using latest version)
 
 2. Create a new Ionic project
@@ -28,6 +31,8 @@ Sample PhoneGap conference application for tracking sessions and speakers. Built
 
 REST Services 
 -------------
+** Copy the **/server** folder from this repo into the Ionic project root folder created above
+
 1. Install server dependencies. Navigate into **/server** folder from the command line and type:
 
         npm install 
