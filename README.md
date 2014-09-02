@@ -9,7 +9,7 @@ Sample PhoneGap conference application for tracking sessions and speakers. Built
 
         ionic start ConferenceTracker
         
-3. Replace the /www folder with the **/www** folder from this project. 
+3. Replace the **/www** folder with the **/www** folder from this project. 
 
 4. Add desired platforms (when ready to test on device)
         
@@ -26,9 +26,9 @@ REST Services
       
         node server
         
-3. Go to localhost:5000/sessions in your browser and make sure you see session data returned in JSON format
+3. Go to http://localhost:5000/sessions to test your node service in your browser and make sure you see session data returned in JSON format.
 
 
-For now, test the app in the browser with: http://localhost:5000/#/app/sessions
+Test the app in the browser with: http://localhost:5000/#/app/sessions
 
 ** Login with your Facebook credentials from the Login screen if you want to see your profile info in the Profile menu option
