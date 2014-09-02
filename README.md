@@ -3,7 +3,7 @@ ConferenceTracker
 
 Sample PhoneGap conference application for tracking sessions and speakers. Built with Ionic/AngularJS and using a node.js REST API. 
 
-1. Ensure you have [Ionic](http://ionicframework.com/getting-started/) installed (and using latest version)
+1. Ensure you have [Ionic](http://ionicframework.com/getting-started/) installed (and are using latest version)
 
 2. Create a new Ionic project
 
@@ -11,11 +11,15 @@ Sample PhoneGap conference application for tracking sessions and speakers. Built
         
 3. Replace the **/www** folder with the **/www** folder from this project. 
 
-4. Add desired platforms (when ready to test on device)
+4. Add the InAppBrowser plugin (needed for Facebook OAuth on device)
+
+        cordova plugins add org.apache.cordova.inappbrowser
+
+5. Add desired platforms (when ready to test on device)
         
         ionic platform add ios
 
-5. Run on desired platform
+6. Run on desired platform
 
         ionic run ios
 
