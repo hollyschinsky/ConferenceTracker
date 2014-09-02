@@ -1,0 +1,16 @@
+var sessions = [
+    {id:0 , title:"Enterprise: not just a dirty word any more", speaker:"Bruce Lefebvre", "pic": "bruce_lefebvre.png", time:"9:00am", room:"Ballroom A", description: "This talk will focus on the integration of Adobe Experience Manager (AEM) and PhoneGap, affectionately known as PhoneGap Enterprise. We'll cover why you should care (hint: $) and bring you up to speed on what the platform can do for you and your clients. I'll dive into a technical review of the architecture, present the analytics dashboards and content authoring tools included with the integration, and demo the development workflow of building a real app with PhoneGap Enterprise."},
+    {id:1 , title:"Many Views: Third Party WebViews on Android", speaker:"Joe Bowser", "pic": "joe_bowser.jpg", time:"10:00am", room:"Ballroom B", description: "A discussion of Third Party WebViews, when to use this new feature of Cordova, and how a Third Party WebView differs from the WebView on a default Android device.  This talk will probably include a live demo.."},
+    {id:2 , title:"The Enterprise Side of Hybrid Development", speaker:"John M. Wargo","pic": "john_wargo.jpg", time:"11:00am", room:"Ballroom C", description: "We all know about how popular PhoneGap is and there are a ton of tools and apps out there. In this session, SAP product manager John Wargo will talk about the enterprise side of PhoneGap/Cordova - what corporations are doing with the framework, what tools and products have emerged, what might be holding the enterprise back and what the future holds for the corporate side of hybrid development."},
+    {id:3 , title:"AngularJS + Ionic + PhoneGap = Mobile Nirvana", speaker:"Jeff French", "pic": "jeff_french.png", time:"1:00Pm", room:"Ballroom B", description: "Are you tired of your PhoneGap apps *feeling* like they are just mobile webpages in the AppStore? In this session I'll introduce you to the world of building mobile apps with AngularJS and the Ionic Framework. Ionic provides beautiful, native looking CSS components and design elements but takes it one step further: Ionic also provides native app *behaviors* in the form of AngularJS directives. Now you can add slide-in menus, swipeable list items, infinite scrolling and much, much more with just a few lines of code. We'll take a lap around all the features of the Ionic framework and dive into building an app with Ionic, AngularJS and PhoneGap."},
+    {id:4 , title:"Developing for Wearables using PhoneGap", speaker:"Christian Floerkemeier", "pic": "christian_floerkemeier.jpg", time:"2:00pm", room:"Ballroom A", description: "This talk will explore how developers can leverage their expertise in HTML, CSS and JavaScript to develop apps for various wearable devices, such as Google Glass, Vuzix M100 Smart Glasses, or a Samsung Galaxy Gear, by using PhoneGap. This will be demonstrated using a simple example of a barcode scanning and image recognition app created in this way. The talk will include tips for developers on how to get started, and lessons learned during the process."}
+];
+
+exports.findAll = function (req, res, next) {
+    res.send(sessions);
+};
+
+exports.findById = function (req, res, next) {
+    var id = req.params.id;
+    res.send(sessions[id]);
+};

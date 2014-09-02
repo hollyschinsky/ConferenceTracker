@@ -1,0 +1,26 @@
+<ion-view title="Session Schedule">
+  <ion-nav-buttons side="left">
+      <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right">
+      <button class="button button-icon icon ion-more"></button>
+  </ion-nav-buttons>
+
+  <ion-header-bar class="bar bar-stable bar-subheader item-input-inset">
+      <div class="item-input-wrapper">
+        <i class="icon ion-search placeholder-icon"></i>
+        <input id="searchKey" type="search" placeholder="Search Schedule" ng-model="search" autocorrect="off" >
+        <button class="button button-clear" ng-click="clear()">X</button>
+      </div>
+      <button class="button button-clear" ng-click="searchAll()">Search</button>
+  </ion-header-bar>
+
+  <ion-content class="has-header has-subheader">
+      <ion-list>
+          <ion-item ng-repeat="session in sessions | filter:search" type="item-text-wrap"
+                    class="item-avatar"
+                    href="#/app/sessions/{{session.id}}"><img src="pics/{{session.pic}}"/>
+                    {{session.title}}</ion-item>
+      </ion-list>
+  </ion-content>
+</ion-view>

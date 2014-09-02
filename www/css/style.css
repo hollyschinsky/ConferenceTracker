@@ -1,0 +1,21 @@
+/* Empty. Add your own CSS if you like */
+/*.modal2 {
+  width: 250px;
+  min-height: 30px;
+}*/
+/*@media (min-width: 680px) {*/
+
+  .modal {
+    top: 20%;
+    right: 20%;
+    bottom: 20%;
+    left: 20%;
+    overflow: visible;
+    min-height: 30px;
+    width: 150px;
+    height: 30px;
+    text-align: center;
+    color: 0xCCCCCC;
+    font-weight: bold;
+  }
+}
