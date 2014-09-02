@@ -29,8 +29,8 @@ Setting up the Ionic App
 **NOTE:** Facebook integration for Login with Facebook and Profile menu option currently only works when running with the browser via [http://localhost:5000/#/app/sessions](http://localhost:5000/#/app/sessions) after setting up REST services below. It does not yet work via Ionic run/serve. Working on it. 
 
 
-REST Services 
--------------
+Setting up the REST Services 
+----------------------------
 ** Copy the **/server** folder from this repo into the Ionic project root folder created above
 
 1. Install server dependencies. Navigate into **/server** folder from the command line and type:
