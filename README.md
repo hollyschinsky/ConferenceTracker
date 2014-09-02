@@ -15,6 +15,12 @@ Sample PhoneGap conference application for tracking sessions and speakers. Built
         
         ionic platform add ios
 
+5. Run on desired platform
+
+        ionic run ios
+
+####NOTE: Facebook integration for login and Profile options currently only works when running with the browser via localhost:5000 from below, not on device or via Ionic serve yet. ###
+
 
 REST Services 
 =============
@@ -31,4 +37,4 @@ REST Services
 
 Test the app in the browser with: http://localhost:5000/#/app/sessions
 
-** Login with your Facebook credentials from the Login screen if you want to see your profile info in the Profile menu option
+** Login with your Facebook credentials from the Login screen if you want to see your profile info in the Profile menu option. 
