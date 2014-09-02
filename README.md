@@ -19,7 +19,7 @@ Sample PhoneGap conference application for tracking sessions and speakers. Built
 
         ionic run ios
 
-**NOTE:** Facebook integration for Login with Facebook and Profile menu option currently only works when running with the browser via http://localhost:5000/#/app/sessions after setting up REST services below. It does not yet work via Ionic run/serve. Working on it. 
+**NOTE:** Facebook integration for Login with Facebook and Profile menu option currently only works when running with the browser via [http://localhost:5000/#/app/sessions](http://localhost:5000/#/app/sessions) after setting up REST services below. It does not yet work via Ionic run/serve. Working on it. 
 
 
 REST Services 
@@ -32,9 +32,9 @@ REST Services
       
         node server
         
-3. Go to http://localhost:5000/sessions to test your node service in your browser and make sure you see session data returned in JSON format.
+3. Go to [http://localhost:5000/sessions](http://localhost:5000/sessions) to test your node service in your browser and make sure you see session data returned in JSON format.
 
 
-Test the app in the browser with: http://localhost:5000/#/app/sessions
+Test the app in the browser with: [http://localhost:5000/#/app/sessions](http://localhost:5000/#/app/sessions)
 
 ** Login with your Facebook credentials from the Login screen if you want to see your profile info in the Profile menu option. 
