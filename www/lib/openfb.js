@@ -21,9 +21,24 @@ var openFB = (function () {
 
         baseURL = location.protocol + '//' + location.hostname + (location.port ? ':' + location.port : '') + context,
 
-        oauthRedirectURL = baseURL + '/oauthcallback.html',
+        // HOLLY'S NOTES...
+        // For local device/emulator testing outside of PG Dev App... you need to use
+        // a real URL for the callbacks (not one from file:/// protocol URL) that matches
+        // where the index.html is served from.
 
+        // When you run from your computer to test on emulator
+        // or run by default you are serving your index.html from file:///... not gonna work for
+        // OAuth with FB)
+
+        // To get this 'Valid Redirect URL' to use in FB settings and in path of the .html file,
+        // here, run 'ionic serve' from the command line, go to your FB dev app settings and add
+        // as a redirect URL and then enter
+        // below.
+
+        oauthRedirectURL = baseURL + '/oauthcallback.html',
         logoutRedirectURL = baseURL + '/logoutcallback.html',
+        //oauthRedirectURL = 'http://192.168.1.25:8100/oauthcallback.html',
+        //logoutRedirectURL = 'http://192.168.1.25:8100/logoutcallback.html',
 
         // Because the OAuth login spans multiple processes, we need to keep the login callback function as a variable
         // inside the module instead of keeping it local within the login function.
@@ -35,8 +50,9 @@ var openFB = (function () {
         // Used in the exit event handler to identify if the login has already been processed elsewhere (in the oauthCallback function)
         loginProcessed;
 
-    console.log(oauthRedirectURL);
+    console.log("REDIRECT URL " + oauthRedirectURL);
     console.log(logoutRedirectURL);
+    console.log("Base URL " + baseURL);
 
     document.addEventListener("deviceready", function () {
         runningInCordova = true;
@@ -99,6 +115,9 @@ var openFB = (function () {
         // Inappbrowser load start handler: Used when running in Cordova only
         function loginWindow_loadStartHandler(event) {
             var url = event.url;
+            console.log("Login Window Start Handler for InAppBrowser " + url)
+            console.log("Access token index " + url.indexOf("access_token=") > 0);
+            console.log("Error index " + url.indexOf("error=") > 0);
             if (url.indexOf("access_token=") > 0 || url.indexOf("error=") > 0) {
                 // When we get the access token fast, the login window (inappbrowser) is still opening with animation
                 // in the Cordova app, and trying to close it while it's animating generates an exception. Wait a little...
@@ -114,6 +133,7 @@ var openFB = (function () {
         function loginWindow_exitHandler() {
             console.log('exit and remove listeners');
             // Handle the situation where the user closes the login window manually before completing the login process
+
             deferredLogin.reject({error: 'user_cancelled', error_description: 'User cancelled login process', error_reason: "user_cancelled"});
             loginWindow.removeEventListener('loadstop', loginWindow_loadStartHandler);
             loginWindow.removeEventListener('exit', loginWindow_exitHandler);

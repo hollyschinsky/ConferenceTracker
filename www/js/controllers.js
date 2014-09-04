@@ -3,7 +3,7 @@ angular.module('conference.controllers', ['conference.services'])
 .controller('ProfileCtrl', function($scope) {
     openFB.api({
         path: '/me',
-        params: {fields: 'id,name,email,birthday'},
+        params: {fields: 'id,name,email'},
         success: function(user) {
             $scope.$apply(function() {
                 $scope.user = user;
@@ -44,6 +44,7 @@ angular.module('conference.controllers', ['conference.services'])
     $timeout(function() {
       $scope.closeLogin();
     }, 1000);
+    alert('Basic login succeeded, no facebook features enabled.');
   };
   $scope.fbLogin = function() {
     openFB.getLoginStatus(function(result) {console.log("Result status " + result.status)});
@@ -51,6 +52,7 @@ angular.module('conference.controllers', ['conference.services'])
         function(response) {
             if (response.status === 'connected') {
                 console.log('Facebook login succeeded');
+                alert('Facebook login succeeded');
                 $scope.closeLogin();
             } else {
                 alert('Facebook login failed');
@@ -58,6 +60,20 @@ angular.module('conference.controllers', ['conference.services'])
         },
         {scope: 'email,publish_actions'});
     }
+    $scope.logout = function() {
+      // TODO: Fix to use PG notification instead! HS
+      openFB.logout(
+                function() {
+                    console.log('Facebook logout succeeded');
+                    alert('Logout successful');
+                },
+                function(error) {
+                    alert('Logout error ' + error);
+                }
+      )
+    }
+
+
 })
 
 .controller('SessionsCtrl', function($scope, Session) {

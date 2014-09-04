@@ -15,6 +15,8 @@ angular.module('conference.services', ['ngResource'])
 .factory('Session', function ($resource) {
     // Node backend
     return $resource('http://localhost:5000/sessions/:sessionId');
+    // HS - When running with Ionic serve...
+    //return $resource('http://192.168.1.25:5000/sessions/:sessionId');
     //return $resource('data/sessions.json/:sessionId');
     //return $resource('data/sessions.json/:sessionId', {}, {
       //query: {method:'GET', isArray:true}
