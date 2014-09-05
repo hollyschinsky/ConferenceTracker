@@ -3,24 +3,37 @@
       <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
   <ion-nav-buttons side="right">
-      <button class="button button-icon icon ion-more"></button>
+      <button class="button button-icon icon ion-more" ng-click="showFilterPopover($event)"></button>
   </ion-nav-buttons>
 
   <ion-header-bar class="bar bar-stable bar-subheader item-input-inset">
       <div class="item-input-wrapper">
         <i class="icon ion-search placeholder-icon"></i>
-        <input id="searchKey" type="search" placeholder="Search Schedule" ng-model="search" autocorrect="off" >
+        <input id="searchKey" type="search" placeholder="Search Schedule" ng-model="searchTxt" autocorrect="off" ng-change="setFilter()">
         <button class="button button-clear" ng-click="clear()">X</button>
       </div>
       <button class="button button-clear" ng-click="searchAll()">Search</button>
   </ion-header-bar>
 
   <ion-content class="has-header has-subheader">
-      <ion-list>
+      <ion-list class="list">
+          <label class="item item-input item-select">
+              <div class="input-label">
+                  <strong>Filter By</strong>
+              </div>
+              <select ng-model="field" ng-change="setFilter()">
+                  <option value="all" ng-selected=true>All</option>
+                  <option value="title">Title</option>
+                  <option value="speaker">Speaker</option>
+                  <option value="description">Description</option>
+              </select>
+          </label>
           <ion-item ng-repeat="session in sessions | filter:search" type="item-text-wrap"
+
                     class="item-avatar"
                     href="#/app/sessions/{{session.id}}"><img src="pics/{{session.pic}}"/>
-                    {{session.title}}</ion-item>
+                    {{session.title}}
+          </ion-item>
       </ion-list>
   </ion-content>
 </ion-view>

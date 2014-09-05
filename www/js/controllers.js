@@ -1,20 +1,19 @@
 angular.module('conference.controllers', ['conference.services'])
 
-.controller('ProfileCtrl', function($scope) {
-    openFB.api({
-        path: '/me',
-        params: {fields: 'id,name,email'},
-        success: function(user) {
-            $scope.$apply(function() {
-                $scope.user = user;
-            });
-        },
-        error: function(error) {
-            alert('Facebook error: ' + error.error_description);
-        }
-    });
+.controller('ProfileCtrl', function($scope, ProfileSvc) {
+    if ($scope.user==null)
+        getProfile(); //Call immediately when open if haven't retrieved user info yet
+
+    function getProfile() {
+         ProfileSvc.getFBProfile(function(){console.log("Success")},onFail);
+         function onFail() {
+            // Give them the login modal so they can try to login from here and then load the user
+            $scope.modal.show();
+         }
+     }
 })
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, $rootScope) {
   // Form data for the login modal
   $scope.loginData = {};
 
@@ -44,39 +43,70 @@ angular.module('conference.controllers', ['conference.services'])
     $timeout(function() {
       $scope.closeLogin();
     }, 1000);
-    alert('Basic login succeeded, no facebook features enabled.');
+      if (navigator.notification)
+          navigator.notification.alert('Basic login succeeded, no facebook features enabled.',null,'Success')
+      else alert('Basic login succeeded, no facebook features enabled.');
   };
+
   $scope.fbLogin = function() {
     openFB.getLoginStatus(function(result) {console.log("Result status " + result.status)});
     openFB.login(
         function(response) {
             if (response.status === 'connected') {
                 console.log('Facebook login succeeded');
-                alert('Facebook login succeeded');
+                if (navigator.notification) {
+                    navigator.notification.alert('Facebook login succeeded', null, 'Success');
+                }
+                else alert("Facebook login succeeded");
                 $scope.closeLogin();
+                //if we're on the profile page, set the user data with what was returned from FB so it displays now
+                if (window.location.href.indexOf('profile')>-1)
+                    $scope.user = $rootScope.user;
+
             } else {
-                alert('Facebook login failed');
+                if (navigator.notification)
+                    navigator.notification.alert('Facebook login failed',null,'Error')
+                else alert('Facebook login failed');
             }
         },
         {scope: 'email,publish_actions'});
     }
     $scope.logout = function() {
-      // TODO: Fix to use PG notification instead! HS
       openFB.logout(
-                function() {
-                    console.log('Facebook logout succeeded');
-                    alert('Logout successful');
-                },
-                function(error) {
-                    alert('Logout error ' + error);
-                }
+            function() {
+                console.log('Facebook logout succeeded');
+
+                if (navigator.notification)
+                    navigator.notification.alert('Logout successful',null,'Success')
+                else alert('Logout successful');
+
+                $scope.user = null;
+            },
+            function(error) {
+                if (navigator.notification)
+                    navigator.notification.alert('Logout error',null,'Error')
+                else alert('Logout error ' + error);
+            }
       )
     }
-
-
 })
 
-.controller('SessionsCtrl', function($scope, Session) {
+.controller('SessionsCtrl', function($scope, Session, $ionicPopover) {
+    $ionicPopover.fromTemplateUrl('templates/popover.html', {
+        scope: $scope
+    }).then(function(popover) {
+        $scope.popover = popover;
+    });
+    $scope.showFilterPopover = function($event) {
+        $scope.popover.show($event);
+    };
+    $scope.closePopover = function() {
+        $scope.popover.hide();
+    };
+    //Cleanup the popover when we're done with it!
+    $scope.$on('$destroy', function() {
+        $scope.popover.remove();
+    });
 
     $scope.clear = function () {
         $scope.search = "";
@@ -87,9 +117,23 @@ angular.module('conference.controllers', ['conference.services'])
         $scope.sessions = Session.query({name: $scope.searchKey});
     }
     $scope.sessions = Session.query();
+
+    $scope.setFilter = function() {
+        console.log("Filter " + this.field);
+        var field = this.field;
+        if (field === 'title')
+            $scope.search = {title:$scope.searchTxt};
+        else if (field === 'speaker')
+            $scope.search = {speaker:$scope.searchTxt};
+        else if (field === 'description')
+            $scope.search = {description:$scope.searchTxt};
+        else $scope.search = {$:$scope.searchTxt};
+        console.log("Sessions len " + $scope.sessions.length);
+    }
 })
 
 .controller('SessionCtrl', function($scope, $stateParams, Session, favoriteSvc, $ionicModal, $timeout) {
+    // If we want to go back to straight JSON file and not REST, we may need this...
     // $scope.sessions = Session.query();
     // sessionId = $stateParams.sessionId;
     // function filterById(sessions, id) {
@@ -98,6 +142,7 @@ angular.module('conference.controllers', ['conference.services'])
     //   })[0];
     // }
     // $scope.session = filterById($scope.sessions,sessionId);
+
     // Create the fave modal that we will use later
     $ionicModal.fromTemplateUrl('templates/faveModal.html', {
       scope: $scope
@@ -117,33 +162,44 @@ angular.module('conference.controllers', ['conference.services'])
                       $scope.session.speaker
               },
               success: function () {
-                  alert('The session was shared on Facebook');
+                  if (navigator.notification)
+                      navigator.notification.alert('The session was shared on Facebook',null,'Success')
+                  else alert('The session was shared on Facebook');
               },
               error: function () {
-                  alert('An error occurred while sharing this session on Facebook');
+                  if (navigator.notification)
+                    navigator.notification.alert('An error occurred while sharing this session on Facebook',null,'Error');
+                  else alert('An error occurred while sharing this session on Facebook');
               }
           });
     }
     $scope.addFavorite = function (item) {
-
-        $scope.showFaveMsg();
-        favoriteSvc.addFave(item);
+        // Show msg modal if added
+        favoriteSvc.addFave(item,successCB,errorCB);
 
         $timeout(function() {
           $scope.closeFaveMsg();
         }, 1000);
     }
+    function errorCB() {
+        $scope.faveMsg = 'Session was already added';
+        $scope.showFaveMsg();
+    }
+    function successCB() {
+        $scope.faveMsg = 'Session added to favorites';
+        $scope.showFaveMsg();
+    }
+
+    $scope.showFaveMsg = function() {
+        $scope.faveModal.show();
+    };
+
     // Triggered in the fave modal to close it
     $scope.closeFaveMsg = function() {
       $scope.faveModal.hide();
     };
-
-    // Open the fave modal
-    $scope.showFaveMsg = function() {
-      $scope.faveModal.show();
-    };
-
 })
+
 .controller('FavoritesCtrl', function($scope, favoriteSvc) {
   $scope.favorites = favoriteSvc.favorites;
 });
