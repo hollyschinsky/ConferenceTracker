@@ -35,8 +35,11 @@ var openFB = (function () {
         // as a redirect URL and then enter
         // below.
 
+        // HOLLY NOTES - Use when testing with PG Dev App or browser via an ionic serve
         oauthRedirectURL = baseURL + '/oauthcallback.html',
         logoutRedirectURL = baseURL + '/logoutcallback.html',
+
+        // HOLLY NOTES - Use when testing on device or emulator directly with $ ionic run ios for instance
         //oauthRedirectURL = 'http://192.168.1.25:8100/oauthcallback.html',
         //logoutRedirectURL = 'http://192.168.1.25:8100/logoutcallback.html',
 

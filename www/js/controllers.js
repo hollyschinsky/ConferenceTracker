@@ -5,7 +5,10 @@ angular.module('conference.controllers', ['conference.services'])
         getProfile(); //Call immediately when open if haven't retrieved user info yet
 
     function getProfile() {
-         ProfileSvc.getFBProfile(function(){console.log("Success")},onFail);
+         ProfileSvc.getFBProfile(onSuccess,onFail);
+         function onSuccess(user) {
+             $scope.user = user;
+         }
          function onFail() {
             // Give them the login modal so they can try to login from here and then load the user
             $scope.modal.show();
@@ -49,7 +52,6 @@ angular.module('conference.controllers', ['conference.services'])
   };
 
   $scope.fbLogin = function() {
-    openFB.getLoginStatus(function(result) {console.log("Result status " + result.status)});
     openFB.login(
         function(response) {
             if (response.status === 'connected') {
@@ -74,8 +76,6 @@ angular.module('conference.controllers', ['conference.services'])
     $scope.logout = function() {
       openFB.logout(
             function() {
-                console.log('Facebook logout succeeded');
-
                 if (navigator.notification)
                     navigator.notification.alert('Logout successful',null,'Success')
                 else alert('Logout successful');
@@ -92,7 +92,7 @@ angular.module('conference.controllers', ['conference.services'])
 })
 
 .controller('SessionsCtrl', function($scope, Session, $ionicPopover) {
-    $ionicPopover.fromTemplateUrl('templates/popover.html', {
+    $ionicPopover.fromTemplateUrl('templates/about-popover.html', {
         scope: $scope
     }).then(function(popover) {
         $scope.popover = popover;
@@ -120,14 +120,17 @@ angular.module('conference.controllers', ['conference.services'])
 
     $scope.setFilter = function() {
         console.log("Filter " + this.field);
+
+        var search = $scope.searchTxt;
         var field = this.field;
         if (field === 'title')
-            $scope.search = {title:$scope.searchTxt};
+            $scope.search = {title:search};
         else if (field === 'speaker')
-            $scope.search = {speaker:$scope.searchTxt};
+            $scope.search = {speaker:search};
         else if (field === 'description')
-            $scope.search = {description:$scope.searchTxt};
-        else $scope.search = {$:$scope.searchTxt};
+            $scope.search = {description:search};
+        else $scope.search = {$:search}; // ALL case
+
         console.log("Sessions len " + $scope.sessions.length);
     }
 })

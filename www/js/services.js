@@ -23,9 +23,11 @@ angular.module('conference.services', ['ngResource'])
 }])
 
 .factory('Session', function ($resource) {
-    // Node backend
+    // Node backend - works when running on emulator, browser and with PhoneGap Dev App
     return $resource('http://localhost:5000/sessions/:sessionId');
-    // HS - Set locally to my network when running with Ionic serve...
+
+    // When testing directly on device using $ionic run, need to use the URL to your network
+    // such as below
     //return $resource('http://192.168.1.25:5000/sessions/:sessionId');
     //return $resource('data/sessions.json/:sessionId');
 })
@@ -39,12 +41,12 @@ angular.module('conference.services', ['ngResource'])
                 success: function (user) {
                     $rootScope.$apply(function () {
                         $rootScope.user = user;
+                        success(user);
                     });
-                    success();
                 },
                 error: function (error) {
                     var msg;
-                    if (error.code = 190) {
+                    if (error.code == 190) {
                         msg = ' You must first login with Facebook for this feature.'
                     }
 

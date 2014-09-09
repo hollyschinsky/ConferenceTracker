@@ -2041,7 +2041,7 @@ IonicModule
  *   <button ng-click="openPopover($event)">Open Popover</button>
  * </p>
  *
- * <script id="my-popover.html" type="text/ng-template">
+ * <script id="my-about-popover.html" type="text/ng-template">
  *   <ion-popover-view>
  *     <ion-header-bar>
  *       <h1 class="title">My Popover Title</h1>
@@ -2055,7 +2055,7 @@ IonicModule
  * ```js
  * angular.module('testApp', ['ionic'])
  * .controller('MyController', function($scope, $ionicPopover) {
- *   $ionicPopover.fromTemplateUrl('my-popover.html', {
+ *   $ionicPopover.fromTemplateUrl('my-about-popover.html', {
  *     scope: $scope,
  *   }).then(function(popover) {
  *     $scope.popover = popover;
