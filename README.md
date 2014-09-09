@@ -20,7 +20,7 @@ b
 
 5. Add the dialogs plugin (for native style alert dialogs)
 
-       cordova plugin add org.apache.cordova.dialogs
+        cordova plugin add org.apache.cordova.dialogs
 
 6. Add desired platforms (when ready to test on device)
 
