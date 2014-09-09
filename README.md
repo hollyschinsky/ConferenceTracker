@@ -15,7 +15,7 @@ Setting up the Ionic App
 3. Replace the **/www** folder with the **/www** folder from this project.
 
 4. Add the InAppBrowser plugin (needed for Facebook OAuth on device)
-
+b
         cordova plugins add org.apache.cordova.inappbrowser
 
 5. Add the dialogs plugin (for native style alert dialogs)
