@@ -58,7 +58,6 @@ angular.module('conference.controllers', ['conference.services'])
     openFB.login(
         function(response) {
             if (response.status === 'connected') {
-                console.log("respponse " + response  + $scope.user);
                 $scope.loginMsg="Facebook login succeeded!";
                 $scope.login.result=true;
                 $scope.closeLogin();
@@ -206,10 +205,8 @@ angular.module('conference.controllers', ['conference.services'])
     function getProfile() {
         ProfileSvc.getFBProfile(onSuccess,onFail);
 
-        function onSuccess(user) {
-            $scope.user = user;
-            console.log("User is in profile serv " + $scope.user);
-        }
+        function onSuccess(user) {$scope.user = user;}
+
         function onFail(error) {
             var msg = "Could not access Facebook for profile data: " + error.message;
             // There's a dependency on the facebook login currently for the profile info so we'll let them know
@@ -219,7 +216,7 @@ angular.module('conference.controllers', ['conference.services'])
             if (navigator.notification)
                 navigator.notification.alert(msg, null, 'Error')
             else alert(msg);
-            $scope.login();
+            //$scope.login(); we could force the login here with this line but commenting out for now...
         }
     }
 })
