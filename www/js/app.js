@@ -11,7 +11,7 @@ angular.module('conference', ['ionic', 'conference.controllers'])
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if(window.cordova && window.cordova.plugins.Keyboard) {
-        // Set to true for drop-down filter input to work
+        // Don't hide for drop-down filter input to work correctly
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
     }
     if(window.StatusBar) {
@@ -22,7 +22,7 @@ angular.module('conference', ['ionic', 'conference.controllers'])
 })
 
 .config(function($stateProvider, $urlRouterProvider) {
-  //Facebook integration
+  //Facebook integration - Register your app and get your App ID from http://developer.facebook.com
   openFB.init({appId: '443262072480898'});
   $stateProvider
     .state('app.profile', {

@@ -1,9 +1,34 @@
 var sessions = [
-    {id:0 , title:"Enterprise: not just a dirty word any more", speaker:"Bruce Lefebvre", "pic": "bruce_lefebvre.png", time:"9:00am", room:"Ballroom A", description: "This talk will focus on the integration of Adobe Experience Manager (AEM) and PhoneGap, affectionately known as PhoneGap Enterprise. We'll cover why you should care (hint: $) and bring you up to speed on what the platform can do for you and your clients. I'll dive into a technical review of the architecture, present the analytics dashboards and content authoring tools included with the integration, and demo the development workflow of building a real app with PhoneGap Enterprise."},
-    {id:1 , title:"Many Views: Third Party WebViews on Android", speaker:"Joe Bowser", "pic": "joe_bowser.jpg", time:"10:00am", room:"Ballroom B", description: "A discussion of Third Party WebViews, when to use this new feature of Cordova, and how a Third Party WebView differs from the WebView on a default Android device.  This talk will probably include a live demo.."},
-    {id:2 , title:"The Enterprise Side of Hybrid Development", speaker:"John M. Wargo","pic": "john_wargo.jpg", time:"11:00am", room:"Ballroom C", description: "We all know about how popular PhoneGap is and there are a ton of tools and apps out there. In this session, SAP product manager John Wargo will talk about the enterprise side of PhoneGap/Cordova - what corporations are doing with the framework, what tools and products have emerged, what might be holding the enterprise back and what the future holds for the corporate side of hybrid development."},
-    {id:3 , title:"AngularJS + Ionic + PhoneGap = Mobile Nirvana", speaker:"Jeff French", "pic": "jeff_french.png", time:"1:00Pm", room:"Ballroom B", description: "Are you tired of your PhoneGap apps *feeling* like they are just mobile webpages in the AppStore? In this session I'll introduce you to the world of building mobile apps with AngularJS and the Ionic Framework. Ionic provides beautiful, native looking CSS components and design elements but takes it one step further: Ionic also provides native app *behaviors* in the form of AngularJS directives. Now you can add slide-in menus, swipeable list items, infinite scrolling and much, much more with just a few lines of code. We'll take a lap around all the features of the Ionic framework and dive into building an app with Ionic, AngularJS and PhoneGap."},
-    {id:4 , title:"Developing for Wearables using PhoneGap", speaker:"Christian Floerkemeier", "pic": "christian_floerkemeier.jpg", time:"2:00pm", room:"Ballroom A", description: "This talk will explore how developers can leverage their expertise in HTML, CSS and JavaScript to develop apps for various wearable devices, such as Google Glass, Vuzix M100 Smart Glasses, or a Samsung Galaxy Gear, by using PhoneGap. This will be demonstrated using a simple example of a barcode scanning and image recognition app created in this way. The talk will include tips for developers on how to get started, and lessons learned during the process."}
+    {id:0 , title:"PhoneGap Developer App and the PhoneGap GUI", speaker:"Tim Kim", pic: "timkim.jpeg", time:"9:00am",
+        room:"Ballroom A", description: "Developing for PhoneGap just got easier with the newly released PhoneGap GUI that ties in with the PhoneGap Developer App. Learn how to use both to make your PhoneGap development workflow faster and easier than before."},
+
+    {id:1 , title:"Enterprise: Not just a dirty word any more", speaker:"Bruce Lefebvre", pic: "bruce_lefebvre.png", time:"11:00am",
+        room:"Ballroom C", description: "This talk will focus on the integration of Adobe Experience Manager (AEM) and PhoneGap, affectionately known as PhoneGap Enterprise. We'll cover why you should care (hint: $) and bring you up to speed on what the platform can do for you and your clients. I'll dive into a technical review of the architecture, present the analytics dashboards and content authoring tools included with the integration, and demo the development workflow of building a real app with PhoneGap Enterprise."},
+
+    {id:2 , title:"PhoneGap Build: Building without an SDK", speaker:"Brett Rudd", pic: "brettrudd.jpg", time:"2:00pm",
+        room:"Ballroom D", description: "This presentation will cover the features of the service, focusing on some of our new-ish features such as our oath support, plugins and debugging. There will also be some exclusive sneak peeks of new features revolved around external and private plugins that will hopefully be open for immediate beta testing!  We’ll end on discussing the future and what is on our roadmap in the coming months."},
+
+    {id:3 , title:"Many Views: Third Party WebViews on Android", speaker:"Joe Bowser", pic: "joe_bowser.jpg", time:"1:00pm",
+        room:"Ballroom B", description: "Learn about the recent changes in Cordova, and how developers now have the option to use Mozilla's GeckoView in addition to Intel Crosswalk and the default Android WebView on Cordova.  This new feature coming to Cordova on Android finally gives developers a way out of previously irritating bugs that there was no way to work around.  This will go over the ups and downs of developing for different webviews, as well as a demo showing the power of this new feature."},
+
+    {id:4 , title:"PhoneGap Enterprise", speaker:"Anis Kadri", pic: "anis.png", time:"10:00am",
+        room:"Ballroom F",description:"Learn more about PhoneGap enterprise. A new way to create and distribute apps inside your enterprise powered by Adobe Marketing Cloud and Adobe Experience Manager. Find out how you can speed up your development cycles and allow your team members to better collaborate in order to easily create mobile apps."},
+
+    {id:5 , title:"Sneak Peek: Adobe Experience Manager and Mobile", speaker:"Anthony Rumsey", pic: "anthony.jpeg", time:"4:45pm",
+        room:"Ballroom A", description: "See a sneak peek demo of the new features coming soon to PhoneGap Enterprise and Adobe Experience Manager."},
+
+    {id:6 , title:"Workshop: Intro to PhoneGap", speaker:"Michael Brooks", pic: "mwbrooks.jpeg", time:"10:00am",
+        room:"Theater", description: "This workshop will provide an introduction to PhoneGap, the philosophy behind it and how to get started quickly using a variety of different tools available. The CLI, PhoneGap Developer App, PhoneGap Build and more will be shown and you will learn about the many frameworks available to choose from when building your mobile apps. You will also be shown debugging techniques and walk away with a solid understanding of what PhoneGap is all about."},
+
+    {id:7 , title:"Workshop: Architecting PhoneGap Apps ", speaker:"Ray Camden", pic: "ray.jpg", time:"1:00pm",
+        room:"Theater", description: "Learn how to architect large, complex, and native-like PhoneGap apps using HTML, JavaScript, and CSS. We will investigate mobile challenges and find solutions for them as well as learn all about Single Page Architecture, HTML templates, effective touch events, performance techniques, MVC Frameworks and more."},
+
+    {id:8 , title:"Workshop: PhoneGap and Firefox OS", speaker:"Jason Weathersby", pic: "jasonweathersby.jpeg", time:"3:00pm",
+        room:"Theater", description: "We'll begin with the current status of the Firefox OS Cordova integration, including demos of building and debugging basic Cordova Apps using Firefox’s new Web IDE. The rest of the workshop will be hands-on: we'll help you run your app on a Firefox OS device."},
+
+    {id:9 , title:"Workshop: Build a PhoneGap App with Ionic+AngularJS", speaker:"Holly Schinsky", pic: "holly.jpg", time:"3:00pm",
+        room:"Theater", description: "In this workshop we’ll build a full-blown mobile application from scratch for a real world scenario using PhoneGap and the Ionic+AngularJS framework stack."}
+
 ];
 
 exports.findAll = function (req, res, next) {

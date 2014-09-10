@@ -1,5 +1,14 @@
 angular.module('conference.services', ['ngResource'])
-.service('favoriteSvc', [ '$rootScope', function( $rootScope ) {
+.factory('SessionSvc', function ($resource) {
+    // Node backend - works when running on emulator, browser and with PhoneGap Dev App
+    return $resource('http://localhost:5000/sessions/:sessionId');
+
+    // When testing directly on device using $ionic run, need to use the URL to your network
+    // such as below
+    //return $resource('http://192.168.1.25:5000/sessions/:sessionId');
+    //return $resource('data/sessions.json/:sessionId');
+})
+.service('FavoriteSvc', [ '$rootScope', function( $rootScope ) {
     var service = {
       favorites: [],
       addFave: function ( item, successCallback, dupeCallback ) {
@@ -22,16 +31,6 @@ angular.module('conference.services', ['ngResource'])
    return service;
 }])
 
-.factory('Session', function ($resource) {
-    // Node backend - works when running on emulator, browser and with PhoneGap Dev App
-    return $resource('http://localhost:5000/sessions/:sessionId');
-
-    // When testing directly on device using $ionic run, need to use the URL to your network
-    // such as below
-    //return $resource('http://192.168.1.25:5000/sessions/:sessionId');
-    //return $resource('data/sessions.json/:sessionId');
-})
-
 .service('ProfileSvc', [ '$rootScope', function( $rootScope ){
    var service = {
         getFBProfile: function(success,fail) {
@@ -45,15 +44,7 @@ angular.module('conference.services', ['ngResource'])
                     });
                 },
                 error: function (error) {
-                    var msg;
-                    if (error.code == 190) {
-                        msg = ' You must first login with Facebook for this feature.'
-                    }
-
-                    if (navigator.notification)
-                        navigator.notification.alert('Facebook error ' + error.message + msg, null, 'Error')
-                    else alert('Facebook error: ' + error.message + msg);
-                    fail();
+                    fail(error);
                 }
             });
         }

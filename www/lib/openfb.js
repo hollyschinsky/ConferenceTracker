@@ -40,7 +40,7 @@ var openFB = (function () {
         logoutRedirectURL = baseURL + '/logoutcallback.html',
 
         // HOLLY NOTES - Use when testing on device or emulator directly with $ ionic run ios for instance
-        //oauthRedirectURL = 'http://192.168.1.25:8100/oauthcallback.html',
+        //oauthRedirectURL = 'http://localhost:8100/oauthcallback.html',
         //logoutRedirectURL = 'http://192.168.1.25:8100/logoutcallback.html',
 
         // Because the OAuth login spans multiple processes, we need to keep the login callback function as a variable
@@ -53,7 +53,6 @@ var openFB = (function () {
         // Used in the exit event handler to identify if the login has already been processed elsewhere (in the oauthCallback function)
         loginProcessed;
 
-    console.log("REDIRECT URL " + oauthRedirectURL);
     console.log(logoutRedirectURL);
     console.log("Base URL " + baseURL);
 
@@ -202,22 +201,26 @@ var openFB = (function () {
         var logoutWindow,
             token = tokenStore['fbtoken'];
 
-        /* Remove token. Will fail silently if does not exist */
-        tokenStore.removeItem('fbtoken');
+        if (token == null)
+            callback("Not logged in");
 
-        if (token) {
-            logoutWindow = window.open(FB_LOGOUT_URL + '?access_token=' + token + '&next=' + logoutRedirectURL, '_blank', 'location=no');
-            if (runningInCordova) {
-                setTimeout(function() {
-                    logoutWindow.close();
-                }, 700);
+        else {
+            /* Remove token. Will fail silently if does not exist */
+            tokenStore.removeItem('fbtoken');
+
+            if (token) {
+                logoutWindow = window.open(FB_LOGOUT_URL + '?access_token=' + token + '&next=' + logoutRedirectURL, '_blank', 'location=no');
+                if (runningInCordova) {
+                    setTimeout(function () {
+                        logoutWindow.close();
+                    }, 700);
+                }
+            }
+
+            if (callback) {
+                callback();
             }
         }
-
-        if (callback) {
-            callback();
-        }
-
     }
 
     /**

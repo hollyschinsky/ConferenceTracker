@@ -1,160 +1,144 @@
 angular.module('conference.controllers', ['conference.services'])
 
-.controller('ProfileCtrl', function($scope, ProfileSvc) {
-    if ($scope.user==null)
-        getProfile(); //Call immediately when open if haven't retrieved user info yet
+// General App Handler - no specific route specified - so it handles login methods invoked from menu by default
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, ProfileSvc) {
+    // Init the login modal
+    $scope.loginData = {};
+    $scope.loginMsg="";
 
-    function getProfile() {
-         ProfileSvc.getFBProfile(onSuccess,onFail);
-         function onSuccess(user) {
-             $scope.user = user;
-         }
-         function onFail() {
-            // Give them the login modal so they can try to login from here and then load the user
+    // Create the login modal that we will use later
+    $ionicModal.fromTemplateUrl('templates/login.html', {
+        scope: $scope
+    })
+    .then(function(modal) {
+        $scope.modal = modal;
+        // Now that modal is ready, let's have them login first
+        $scope.login();
+    });
+
+
+    $scope.closeLogin = function() {
+        $scope.modal.hide();
+    };
+
+    // Open the login modal
+    $scope.login = function() {
+        $scope.loginData = {};
+        $scope.loginMsg="";
+        if ($scope.modal!=undefined)
             $scope.modal.show();
-         }
-     }
-})
+    };
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, $rootScope) {
-  // Form data for the login modal
-  $scope.loginData = {};
-
-  // Create the login modal that we will use later
-  $ionicModal.fromTemplateUrl('templates/login.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-
-  // Triggered in the login modal to close it
-  $scope.closeLogin = function() {
-    $scope.modal.hide();
-  };
-
-  // Open the login modal
-  $scope.login = function() {
-    $scope.modal.show();
-  };
-
-  // Perform the login action when the user submits the login form
+  // Basic Login Handling -
+  // Invoke a check for userid and pw being valued but nothing beyond a message
   $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
-
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
-      if (navigator.notification)
-          navigator.notification.alert('Basic login succeeded, no facebook features enabled.',null,'Success')
-      else alert('Basic login succeeded, no facebook features enabled.');
+     if ($scope.loginData.username!=undefined && $scope.loginData.password!=undefined) {
+         // Simulate authentication check - roll your own here instead of success timeout :)
+         $timeout(function() {
+             $scope.closeLogin();
+         }, 1000);
+         $scope.loginMsg = "Login successful!";
+         $scope.login.result = true;
+     }
+      else {
+         $scope.loginMsg = "Please enter a username and password";
+         $scope.login.result = false;
+     }
   };
 
+    $ionicModal.fromTemplateUrl('templates/msgModal.html', {
+        scope: $scope
+    }).then(function(modal) {
+        $scope.msgModal = modal;
+    });
+
+
+  // Facebook Login (actual Facebook login, have to use your FB credentials)
   $scope.fbLogin = function() {
     openFB.login(
         function(response) {
             if (response.status === 'connected') {
-                console.log('Facebook login succeeded');
-                if (navigator.notification) {
-                    navigator.notification.alert('Facebook login succeeded', null, 'Success');
-                }
-                else alert("Facebook login succeeded");
+                console.log("respponse " + response  + $scope.user);
+                $scope.loginMsg="Facebook login succeeded!";
+                $scope.login.result=true;
                 $scope.closeLogin();
-                //if we're on the profile page, set the user data with what was returned from FB so it displays now
                 if (window.location.href.indexOf('profile')>-1)
-                    $scope.user = $rootScope.user;
+                    ProfileSvc.getFBProfile(function(user){$scope.user=user},function(error){console.log(error)});
 
             } else {
-                if (navigator.notification)
-                    navigator.notification.alert('Facebook login failed',null,'Error')
-                else alert('Facebook login failed');
+                $scope.loginMsg="Facebook login failed";
+                $scope.login.result=false;
             }
         },
         {scope: 'email,publish_actions'});
     }
-    $scope.logout = function() {
-      openFB.logout(
-            function() {
-                if (navigator.notification)
-                    navigator.notification.alert('Logout successful',null,'Success')
-                else alert('Logout successful');
 
+    // General Logout
+    $scope.logout = function() {
+      // There's only one callback in the openFB logout()...
+      openFB.logout(function(msg) {
                 $scope.user = null;
-            },
-            function(error) {
-                if (navigator.notification)
-                    navigator.notification.alert('Logout error',null,'Error')
-                else alert('Logout error ' + error);
-            }
+                if (msg==null)
+                    msg = "Facebook logout success"
+
+                $scope.msg = msg;
+                $scope.msgModal.show();
+        }
       )
     }
 })
 
-.controller('SessionsCtrl', function($scope, Session, $ionicPopover) {
+// Triggered from the sessions view... based on being specified in app.js route
+.controller('SessionsCtrl', function($scope, SessionSvc, $ionicPopover) {
     $ionicPopover.fromTemplateUrl('templates/about-popover.html', {
         scope: $scope
     }).then(function(popover) {
         $scope.popover = popover;
     });
+
     $scope.showFilterPopover = function($event) {
         $scope.popover.show($event);
     };
+
     $scope.closePopover = function() {
         $scope.popover.hide();
     };
-    //Cleanup the popover when we're done with it!
+
+    // Cleanup the popover upon destroy event
     $scope.$on('$destroy', function() {
         $scope.popover.remove();
     });
 
-    $scope.clear = function () {
-        $scope.search = "";
-        $scope.sessions = Session.query();
-    }
-
-    $scope.searchAll = function () {
-        $scope.sessions = Session.query({name: $scope.searchKey});
-    }
-    $scope.sessions = Session.query();
+    // Get all sessions initially
+    $scope.sessions = SessionSvc.query();
 
     $scope.setFilter = function() {
-        console.log("Filter " + this.field);
+        console.log("Filter field " + this.field);
 
         var search = $scope.searchTxt;
         var field = this.field;
+
         if (field === 'title')
             $scope.search = {title:search};
         else if (field === 'speaker')
             $scope.search = {speaker:search};
         else if (field === 'description')
             $scope.search = {description:search};
-        else $scope.search = {$:search}; // ALL case
-
-        console.log("Sessions len " + $scope.sessions.length);
+        else $scope.search = {$:search}; // ALL cases
     }
 })
 
-.controller('SessionCtrl', function($scope, $stateParams, Session, favoriteSvc, $ionicModal, $timeout) {
-    // If we want to go back to straight JSON file and not REST, we may need this...
-    // $scope.sessions = Session.query();
-    // sessionId = $stateParams.sessionId;
-    // function filterById(sessions, id) {
-    //   return sessions.filter(function(sessions) {
-    //     return (sessions['id'] == id);
-    //   })[0];
-    // }
-    // $scope.session = filterById($scope.sessions,sessionId);
-
-    // Create the fave modal that we will use later
-    $ionicModal.fromTemplateUrl('templates/faveModal.html', {
-      scope: $scope
+// Triggered from a specific session view... Session Detail
+.controller('SessionCtrl', function($scope, $stateParams, $ionicModal, $timeout, SessionSvc, FavoriteSvc) {
+    // Create the modal that we will need to display a message popup quick when things occur
+    $ionicModal.fromTemplateUrl('templates/msgModal.html', {
+        scope: $scope
     }).then(function(modal) {
-      $scope.faveModal = modal;
+        $scope.msgModal = modal;
     });
 
-    $scope.session = Session.get({sessionId: $stateParams.sessionId});
-    $scope.favorites = favoriteSvc.favorites;
+    $scope.session = SessionSvc.get({sessionId: $stateParams.sessionId});
+    $scope.favorites = FavoriteSvc.favorites;
 
     $scope.share = function(event) {
           openFB.api({
@@ -166,43 +150,76 @@ angular.module('conference.controllers', ['conference.services'])
               },
               success: function () {
                   if (navigator.notification)
-                      navigator.notification.alert('The session was shared on Facebook',null,'Success')
-                  else alert('The session was shared on Facebook');
+                      navigator.notification.alert('This session has been shared on Facebook',null,'Success')
+                  else alert('This session has been shared on Facebook');
               },
-              error: function () {
+              error: function (error) {
+                  var msg = 'An error occurred while sharing this session on Facebook';
+                  if (error.code == 190)
+                      msg = ' You must first login with Facebook to use this feature.'
+
                   if (navigator.notification)
-                    navigator.notification.alert('An error occurred while sharing this session on Facebook',null,'Error');
-                  else alert('An error occurred while sharing this session on Facebook');
+                    navigator.notification.alert(msg,null,'Error');
+                  else alert(msg);
               }
           });
     }
+
     $scope.addFavorite = function (item) {
         // Show msg modal if added
-        favoriteSvc.addFave(item,successCB,errorCB);
+        FavoriteSvc.addFave(item,successCB,errorCB);
 
         $timeout(function() {
-          $scope.closeFaveMsg();
+            $scope.closeMsg();
         }, 1000);
     }
     function errorCB() {
-        $scope.faveMsg = 'Session was already added';
-        $scope.showFaveMsg();
+        $scope.msg = 'Session was already added';
+        $scope.showMsg();
     }
     function successCB() {
-        $scope.faveMsg = 'Session added to favorites';
-        $scope.showFaveMsg();
+        $scope.msg = 'Session added to favorites'; //TODO: Do I care if it was already added? Make it a red heart or unreponsive?
+        $scope.showMsg();
     }
 
-    $scope.showFaveMsg = function() {
-        $scope.faveModal.show();
+    $scope.showMsg = function() {
+        $scope.msgModal.show();
     };
 
     // Triggered in the fave modal to close it
-    $scope.closeFaveMsg = function() {
-      $scope.faveModal.hide();
+    $scope.closeMsg = function() {
+      $scope.msgModal.hide();
     };
 })
 
-.controller('FavoritesCtrl', function($scope, favoriteSvc) {
-  $scope.favorites = favoriteSvc.favorites;
-});
+// Let's use the Favorites Service to filter the list that we've marked...
+.controller('FavoritesCtrl', function($scope, FavoriteSvc) {
+    $scope.favorites = FavoriteSvc.favorites;
+})
+
+// TODO: Add some basic profile data rather than depend on Facebook...
+.controller('ProfileCtrl', function($scope, ProfileSvc) {
+    // Try to get user info if null (user will be populated if logged into Facebook)
+    if ($scope.user==null)
+        getProfile();
+
+    function getProfile() {
+        ProfileSvc.getFBProfile(onSuccess,onFail);
+
+        function onSuccess(user) {
+            $scope.user = user;
+            console.log("User is in profile serv " + $scope.user);
+        }
+        function onFail(error) {
+            var msg = "Could not access Facebook for profile data: " + error.message;
+            // There's a dependency on the facebook login currently for the profile info so we'll let them know
+            if (error.code == 190) // Not authorized
+                msg = 'You must first login with Facebook for this feature.'
+
+            if (navigator.notification)
+                navigator.notification.alert(msg, null, 'Error')
+            else alert(msg);
+            $scope.login();
+        }
+    }
+})

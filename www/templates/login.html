@@ -1,9 +1,6 @@
 <div class="modal">
   <ion-header-bar class="login ">
     <h1 class="title">Login</h1>
-    <div class="buttons">
-      <button class="button button-clear" ng-click="closeLogin()">Close</button>
-    </div>
   </ion-header-bar>
   <ion-content>
     <form>
@@ -24,6 +21,7 @@
               Login with Facebook
           </button>
         </label>
+        <label ng-model="loginMsg" class="padLbl" ng-class="{'assertive': !login.result,'balanced':login.result}">{{loginMsg}}</label>
       </div>
     </form>
   </ion-content>
