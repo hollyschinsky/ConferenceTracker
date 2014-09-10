@@ -1,11 +1,10 @@
 Running from the PhoneGap Developer App ($ phonegap serve)
 ===========================================================
-
 1) Go into /server folder and start node server with:
 
-    $ node server
+                $ node server
 
-    Express server listening on port 5000
+                Express server listening on port 5000
     
 2) The facebook login/logout will work whether the lib/openFB.js file has the URLs hard coded to the localhost URL or
 whether it is determined automatically.
