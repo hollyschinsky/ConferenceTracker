@@ -4,8 +4,10 @@
             <div class="item">
                 <div class="item-avatar"> <img src="pics/{{session.pic}}"/></div>
                 <h3>{{time}}</h3>
-                <h2>{{session.title}}</h2>
-                <p>{{session.speaker|uppercase}}</p>
+                <div class="sessionTitle">
+                    <h2>{{session.title}}</h2>
+                    <p>{{session.speaker|uppercase}}</p>
+                </div>
             </div>
             <div class="item item-body">
                 <p>{{session.description}}</p>

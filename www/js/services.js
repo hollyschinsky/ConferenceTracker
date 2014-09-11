@@ -5,7 +5,7 @@ angular.module('conference.services', ['ngResource'])
 
     // When testing directly on device using $ionic run, need to use the URL to your network
     // such as below
-    //return $resource('http://192.168.1.25:5000/sessions/:sessionId');
+     //$resource('http://192.168.1.25:5000/sessions/:sessionId');
     //return $resource('data/sessions.json/:sessionId');
 })
 .service('FavoriteSvc', [ '$rootScope', function( $rootScope ) {

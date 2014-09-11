@@ -1,5 +1,8 @@
 /**
  * Created by hollyschinsky on 9/9/14.
+ *
+ * Implement this to show another approach without REST API to just use JSON data but with deferred/promise approach so they
+ * can easily shift to a REST API in future.
  */
 angular.module('conference.services', [])
     .factory('SessionService', function($q) {
@@ -33,7 +36,7 @@ angular.module('conference.services', [])
                 room:"Theater", description: "We'll begin with the current status of the Firefox OS Cordova integration, including demos of building and debugging basic Cordova Apps using Firefox’s new Web IDE. The rest of the workshop will be hands-on: we'll help you run your app on a Firefox OS device."},
 
             {id:9 , title:"Workshop: Build a PhoneGap App with Ionic+AngularJS", speaker:"Holly Schinsky", pic: "holly.jpg", time:"3:00pm",
-                room:"Theater", description: "In this session we’ll build a full-blown mobile application from scratch for a real world scenario using PhoneGap and the Ionic+AngularJS framework stack."}
+                room:"Theater", description: "In this workshop we’ll build a full-blown mobile application from scratch for a real world scenario using PhoneGap and the Ionic+AngularJS framework stack."}
 
         ];
 

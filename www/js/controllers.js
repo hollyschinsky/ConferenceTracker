@@ -125,6 +125,8 @@ angular.module('conference.controllers', ['conference.services'])
             $scope.search = {description:search};
         else $scope.search = {$:search}; // ALL cases
     }
+
+    $scope.clear = function() {$scope.searchTxt=""};
 })
 
 // Triggered from a specific session view... Session Detail

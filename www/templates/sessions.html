@@ -32,7 +32,7 @@
           <ion-item ng-repeat="session in sessions | filter:search" type="item-text-wrap"
                     class="item-avatar"
                     href="#/app/sessions/{{session.id}}"><img src="pics/{{session.pic}}"/>
-                    {{session.title}}
+                    <p class="title">{{session.title}}</p>
           </ion-item>
       </ion-list>
   </ion-content>
