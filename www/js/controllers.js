@@ -1,7 +1,11 @@
 angular.module('conference.controllers', ['conference.services'])
 
 // General App Handler - no specific route specified - so it handles login methods invoked from menu by default
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, ProfileSvc) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout, FacebookService, TwitterService, LinkedInService) {
+    // Initialize our social services
+    TwitterService.initialize();
+    LinkedInService.initialize();
+
     // Init the login modal
     $scope.loginData = {};
     $scope.loginMsg="";
@@ -16,7 +20,6 @@ angular.module('conference.controllers', ['conference.services'])
         $scope.login();
     });
 
-
     $scope.closeLogin = function() {
         $scope.modal.hide();
     };
@@ -29,9 +32,8 @@ angular.module('conference.controllers', ['conference.services'])
             $scope.modal.show();
     };
 
-  // Basic Login Handling -
-  // Invoke a check for userid and pw being valued but nothing beyond a message
-  $scope.doLogin = function() {
+    // Basic Login Handling - invoke a check for userid and pw being valued but nothing beyond a message
+    $scope.doLogin = function() {
      if ($scope.loginData.username!=undefined && $scope.loginData.password!=undefined) {
          // Simulate authentication check - roll your own here instead of success timeout :)
          $timeout(function() {
@@ -44,7 +46,7 @@ angular.module('conference.controllers', ['conference.services'])
          $scope.loginMsg = "Please enter a username and password";
          $scope.login.result = false;
      }
-  };
+    };
 
     $ionicModal.fromTemplateUrl('templates/msgModal.html', {
         scope: $scope
@@ -53,42 +55,78 @@ angular.module('conference.controllers', ['conference.services'])
     });
 
 
-  // Facebook Login (actual Facebook login, have to use your FB credentials)
-  $scope.fbLogin = function() {
-    openFB.login(
-        function(response) {
+    // Facebook Login (actual Facebook login, have to use your FB credentials)
+    $scope.fbLogin = function() {
+        FacebookService.login(rspCallback);
+        function rspCallback(response) {
+            console.log("RESP " + response);
             if (response.status === 'connected') {
-                $scope.loginMsg="Facebook login succeeded!";
-                $scope.login.result=true;
+                $scope.loginMsg = "Facebook login succeeded!";
+                $scope.login.result = true;
                 $scope.closeLogin();
-                if (window.location.href.indexOf('profile')>-1)
-                    ProfileSvc.getFBProfile(function(user){$scope.user=user},function(error){console.log(error)});
-
+                // Could add code to check if on profile page and swap out user with logged in one...
             } else {
                 $scope.loginMsg="Facebook login failed";
                 $scope.login.result=false;
             }
-        },
-        {scope: 'email,publish_actions'});
+        }
     }
 
-    // General Logout
-    $scope.logout = function() {
-      // There's only one callback in the openFB logout()...
-      openFB.logout(function(msg) {
-                $scope.user = null;
-                if (msg==null)
-                    msg = "Facebook logout success"
+    // Twitter Login
+    $scope.twLogin = function() {
+        TwitterService.connectTwitter().then(function () {
+            if (TwitterService.isReady()) {
+                $scope.loginMsg="Twitter login succeeded!";
+                $scope.login.result=true;
+                $scope.closeLogin();
+            }
+        });
+    }
 
-                $scope.msg = msg;
-                $scope.msgModal.show();
+     // LinkedIn Login
+    $scope.liLogin = function(event) {
+        LinkedInService.connectLinkedin().then(function () {
+            if (LinkedInService.isReady()) {
+                $scope.loginMsg="LinkedIn login succeeded!";
+                $scope.login.result=true;
+                $scope.closeLogin();
+            }
+        });
+    }
+
+    // Logout
+    $scope.logout = function() {
+        // If Twitter Logged in
+        if (TwitterService.isReady()) {
+            //sign out clears the OAuth cache, the user will have to reauthenticate when returning
+            TwitterService.clearCache();
+            $scope.user = null;
+            $scope.msg = "Twitter logout success"
         }
-      )
+        else if (LinkedInService.isReady()) {
+            //sign out clears the OAuth cache, the user will have to reauthenticate when returning
+            LinkedInService.clearCache();
+            $scope.user = null;
+            $scope.msg = "Linkedin logout success"
+        }
+        // There's only one callback in the openFB logout()...
+        else if (window.sessionStorage.fbtoken) {
+          openFB.logout(function (msg) {
+              $scope.user = null;
+              $scope.msg = "Facebook logout success"
+          })
+        }
+        else $scope.msg = "Logout success";
+
+        $scope.msgModal.show();
     }
 })
 
-// Triggered from the sessions view... based on being specified in app.js route
-.controller('SessionsCtrl', function($scope, SessionSvc, $ionicPopover) {
+.controller('SessionsCtrl', function($scope, SessionService, $ionicPopover) {
+
+    // Get all the sessions initially
+    $scope.sessions = SessionService.query();
+
     $ionicPopover.fromTemplateUrl('templates/about-popover.html', {
         scope: $scope
     }).then(function(popover) {
@@ -108,12 +146,8 @@ angular.module('conference.controllers', ['conference.services'])
         $scope.popover.remove();
     });
 
-    // Get all sessions initially
-    $scope.sessions = SessionSvc.query();
-
+    // Filter sessions by entering text in field and selecting from drop-down
     $scope.setFilter = function() {
-        console.log("Filter field " + this.field);
-
         var search = $scope.searchTxt;
         var field = this.field;
 
@@ -129,46 +163,58 @@ angular.module('conference.controllers', ['conference.services'])
     $scope.clear = function() {$scope.searchTxt=""};
 })
 
-// Triggered from a specific session view... Session Detail
-.controller('SessionCtrl', function($scope, $stateParams, $ionicModal, $timeout, SessionSvc, FavoriteSvc) {
-    // Create the modal that we will need to display a message popup quick when things occur
+.controller('SessionCtrl', function($scope, $stateParams, $q, $ionicModal, $timeout, SessionService, FavoriteService,
+                                    $cordovaDialogs, TwitterService, FacebookService) {
+
+    $scope.favorites = FavoriteService.favorites;
+
+    // Create the modal that we will need to display a message popupFa
     $ionicModal.fromTemplateUrl('templates/msgModal.html', {
         scope: $scope
     }).then(function(modal) {
         $scope.msgModal = modal;
     });
 
-    $scope.session = SessionSvc.get({sessionId: $stateParams.sessionId});
-    $scope.favorites = FavoriteSvc.favorites;
+    // When we get the session resource back, check to see if it matches any in the favorites and set a flag so the
+    // heart displays red.
+    SessionService.get({sessionId: $stateParams.sessionId})
+    .$promise.then(function(session) {
+        $scope.session = session;
+        angular.forEach($scope.favorites, function (fave) {
+            if (session.id == fave.id)
+                $scope.session.isFave = true;
+        })
+    });
 
-    $scope.share = function(event) {
-          openFB.api({
-              method: 'POST',
-              path: '/me/feed',
-              params: {
-                  message: "I'll be attending: '" + $scope.session.title + "' by " +
-                      $scope.session.speaker
-              },
-              success: function () {
-                  if (navigator.notification)
-                      navigator.notification.alert('This session has been shared on Facebook',null,'Success')
-                  else alert('This session has been shared on Facebook');
-              },
-              error: function (error) {
-                  var msg = 'An error occurred while sharing this session on Facebook';
-                  if (error.code == 190)
-                      msg = ' You must first login with Facebook to use this feature.'
+    $scope.share = function(session) {
+        if (window.sessionStorage.fbtoken!=undefined) {
+            FacebookService.postFacebook(session);
+        }
+        else $cordovaDialogs.alert('You must first login with Facebook to use this feature.',null,'Info');
+    }
 
-                  if (navigator.notification)
-                    navigator.notification.alert(msg,null,'Error');
-                  else alert(msg);
-              }
-          });
+    $scope.follow = function(screenname) {
+        if (TwitterService.isReady()) {
+            TwitterService.follow(screenname).then(function (data) {
+                console.log("Speaker has " + data.followers_count + " followers")
+                $cordovaDialogs.alert('You are now following ' + screenname, null, 'Info');
+            });
+        }
+        else {
+            $cordovaDialogs.alert('You must first login with Twitter to use this feature.',null,'Info');
+            TwitterService.connectTwitter().then(function () {
+                $cordovaDialogs.alert('You are now following ' + screenname, null, 'Info');
+            })
+        }
     }
 
     $scope.addFavorite = function (item) {
-        // Show msg modal if added
-        FavoriteSvc.addFave(item,successCB,errorCB);
+        if (!item.isFave)
+            FavoriteService.addFave(item,successCB,errorCB);
+        else {
+            item.isFave=false;
+            FavoriteService.removeFave(item);
+        }
 
         $timeout(function() {
             $scope.closeMsg();
@@ -178,9 +224,10 @@ angular.module('conference.controllers', ['conference.services'])
         $scope.msg = 'Session was already added';
         $scope.showMsg();
     }
-    function successCB() {
-        $scope.msg = 'Session added to favorites'; //TODO: Do I care if it was already added? Make it a red heart or unreponsive?
+    function successCB(session) {
+        $scope.msg = 'Session added to favorites';
         $scope.showMsg();
+        session.isFave=true;
     }
 
     $scope.showMsg = function() {
@@ -189,36 +236,84 @@ angular.module('conference.controllers', ['conference.services'])
 
     // Triggered in the fave modal to close it
     $scope.closeMsg = function() {
-      $scope.msgModal.hide();
+        $scope.msgModal.hide();
     };
 })
 
 // Let's use the Favorites Service to filter the list that we've marked...
-.controller('FavoritesCtrl', function($scope, FavoriteSvc) {
-    $scope.favorites = FavoriteSvc.favorites;
-})
+.controller('FavoritesCtrl', function($scope, $cordovaDialogs, FavoriteService, FacebookService, TwitterService) {
+    $scope.favorites = FavoriteService.favorites;
+    $scope.showDelete = false;
 
-// TODO: Add some basic profile data rather than depend on Facebook...
-.controller('ProfileCtrl', function($scope, ProfileSvc) {
-    // Try to get user info if null (user will be populated if logged into Facebook)
-    if ($scope.user==null)
-        getProfile();
+    $scope.showBtn = function() {
+        if ($scope.showDelete===false)
+            $scope.showDelete=true
+        else ($scope.showDelete=false)
+    }
+    $scope.share = function(fave) {
+        if (window.sessionStorage.fbtoken!=undefined) {
+            FacebookService.postFacebook(fave);
+        }
+        else $cordovaDialogs.alert('You must first login with Facebook to use this feature.',null,'Info');
+    }
 
-    function getProfile() {
-        ProfileSvc.getFBProfile(onSuccess,onFail);
-
-        function onSuccess(user) {$scope.user = user;}
-
-        function onFail(error) {
-            var msg = "Could not access Facebook for profile data: " + error.message;
-            // There's a dependency on the facebook login currently for the profile info so we'll let them know
-            if (error.code == 190) // Not authorized
-                msg = 'You must first login with Facebook for this feature.'
-
-            if (navigator.notification)
-                navigator.notification.alert(msg, null, 'Error')
-            else alert(msg);
-            //$scope.login(); we could force the login here with this line but commenting out for now...
+    $scope.follow = function(screenname) {
+        if (TwitterService.isReady()) {
+            TwitterService.follow(screenname).then(function (data) {
+                console.log("Speaker has " + data.followers_count + " followers");
+                $cordovaDialogs.alert('You are now following ' + screenname, null, 'Info');
+            });
+        }
+        else {
+            $cordovaDialogs.alert('You must first login with Twitter to use this feature.',null,'Info');
+            TwitterService.connectTwitter();
         }
     }
 })
+
+.controller('ProfileCtrl', function($scope, FacebookService, $cordovaDialogs, TwitterService, LinkedInService) {
+    $scope.user = {};
+
+    // Try to get user info if null (user will be populated if logged into Facebook)
+    if (TwitterService.isReady()){
+        TwitterService.getProfile().then(function(data) {
+            $scope.user.pic = data.avatar;
+            $scope.user.name = data.name;
+            $scope.user.email = data.alias; // use this for now - it's actually screenname
+        })
+    }
+    else if (LinkedInService.isReady()) {
+        //ProfileService.getLinkedInProfile(null,null);
+        LinkedInService.getProfile().then(function(data) {
+            $scope.user.pic = data.avatar;
+            $scope.user.name = data.firstname + " " + data.lastname;
+            $scope.user.email = data.email;
+        })
+    }
+    else if (window.sessionStorage.fbtoken!=undefined) {
+        FacebookService.getProfile(onSuccess, onFail);
+        function onSuccess(user) {
+            $scope.$apply(function () {
+                $scope.user = user;
+                $scope.user.pic = "http://graph.facebook.com/" + user.id + "/picture?height=100&type=normal&width=100";
+            })
+        }
+
+        function onFail(error) {
+            var msg = "Could not access Facebook for profile data: " + error.message;
+            if (error.code == 190) // Not authorized
+                msg = 'You must first login with Facebook for this feature.'
+
+            if ($cordovaDialogs) $cordovaDialogs.alert(msg, null, 'Error');
+
+            else alert(msg);
+        }
+    }
+    else {
+        // Some Default User Info
+        $scope.user.name = "Anton Phillips";
+        $scope.user.email = "anton.phillips@agilesystems.com";
+        $scope.user.pic = "pics/default-user.jpg"
+    }
+})
+

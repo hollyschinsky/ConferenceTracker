@@ -2,28 +2,29 @@
 
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.controllers' is found in controllers.js
-angular.module('conference', ['ionic', 'conference.controllers'])
+// the 2nd parameter is an array of 'requires' 'conference.controllers' is found in controllers.js
+//var app = angular.module('conference', ['ionic', 'conference.controllers', 'ngCordova.plugins.device',
+  //  'ngCordova.plugins.keyboard','ngCordova.plugins.statusbar', 'ngCordova.plugins.dialogs'])
+var app = angular.module('conference', ['ionic', 'conference.controllers', 'ngCordovaMocks'])
 
-.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-    // for form inputs)
-    if(window.cordova && window.cordova.plugins.Keyboard) {
-        // Don't hide for drop-down filter input to work correctly
-      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
-    }
-    if(window.StatusBar) {
-      // org.apache.cordova.statusbar required
-      StatusBar.styleDefault();
-    }
-  });
-})
+    .run(function($ionicPlatform) {
+        $ionicPlatform.ready(function() {
+            // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+            // for form inputs)
+            if(window.cordova && window.cordova.plugins.Keyboard) {
+                cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
+            }
+            if(window.StatusBar) {
+                // org.apache.cordova.statusbar required
+                StatusBar.styleDefault();
+            }
+        });
+    })
 
 .config(function($stateProvider, $urlRouterProvider) {
   //Facebook integration - Register your app and get your App ID from http://developer.facebook.com
   openFB.init({appId: '443262072480898'});
+
   $stateProvider
     .state('app.profile', {
       url: "/profile",
@@ -71,6 +72,16 @@ angular.module('conference', ['ionic', 'conference.controllers'])
       }
     })
 
+    .state('app.twitter', {
+      url: "/twitter",
+      views: {
+          'menuContent': {
+              templateUrl: "templates/twitter.html",
+              controller: 'TwitterController'
+          }
+      }
+    })
+
     .state('app.session', {
       url: "/sessions/:sessionId",
       views: {
@@ -80,6 +91,6 @@ angular.module('conference', ['ionic', 'conference.controllers'])
           }
       }
     });
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/sessions');
+    // if none of the above states are matched, use this as the fallback
+    $urlRouterProvider.otherwise('/app/sessions');
 });

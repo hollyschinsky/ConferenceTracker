@@ -1,14 +1,23 @@
 <ion-view title="Favorites">
   <ion-nav-buttons side="left">
-    <button menu-toggle="left"class="button button-icon icon ion-navicon"></button>
+        <button menu-toggle="left"class="button button-icon icon ion-navicon"></button>
   </ion-nav-buttons>
-
+  <ion-nav-buttons side="right">
+        <button class="button button-icon icon ion-ios7-minus-outline" ng-click="showBtn()"></button>
+  </ion-nav-buttons>
   <ion-content class="has-header">
-      <ion-list>
+      <ion-list show-delete="showDelete">
           <ion-item ng-repeat="favorite in favorites" type="item-text-wrap"
                     class="item-avatar"
                     href="#/app/sessions/{{favorite.id}}"><img src="pics/{{favorite.pic}}"/>
                     {{favorite.title}}
+              <ion-option-button class="button-positive"
+                                 ng-click="share(favorite)">
+                  Share
+              </ion-option-button>
+              <ion-delete-button class="ion-minus-circled"
+                                 ng-click="favorites.splice($index, 1)">
+              </ion-delete-button>
           </ion-item>
       </ion-list>
   </ion-content>

@@ -19,13 +19,20 @@
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
 
+    <!-- For Weinre testing -->
     <!--<script src="http://debug.build.phonegap.com/target/target-script-min.js#anonymous"></script>-->
-    <!-- your app's js -->
+
+    <script src="lib/oauth.js"></script> <!-- use oauth.io setup to twitter and linkedin -->
+    <script src="lib/openfb.js"></script> <!-- for facebook -->
+    <!--<script src="lib/ng-cordova.js"></script>-->
+    <script src="lib/ng-cordova-mocks.js"></script> <!-- for testing in browser ONLY - switch with the above  -->
+    <script src="js/services.js"></script>
     <script src="js/app.js"></script>
     <script src="js/controllers.js"></script>
     <script src="js/services.js"></script>
-    <script src="lib/openfb.js"></script>
-
+    <script src="js/FacebookService.js"></script>
+    <script src="js/TwitterService.js"></script>
+    <script src="js/LinkedInService.js"></script>
   </head>
 
   <body ng-app="conference">

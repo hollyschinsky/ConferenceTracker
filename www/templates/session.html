@@ -14,16 +14,16 @@
             </div>
             <div class="item tabs tabs-secondary tabs-icon-left">
                 <a class="tab-item" ng-click="addFavorite(session)">
-                    <i class="icon ion-heart"></i>
+                    <i class="icon ion-heart" ng-class="{'fave': session.isFave}"></i>
                     Favorite
                 </a>
-                <a class="tab-item" ng-click="follow()">
+                <a class="tab-item" ng-click="follow(session.twitter_id)">
                     <i class="icon ion-social-twitter"></i>
-                    Follow
+                    Follow Speaker
                 </a>
-                <a class="tab-item" ng-click="share()">
-                    <i class="icon ion-share"></i>
-                    Share
+                <a class="tab-item" ng-click="share(session)">
+                    <i class="icon ion-social-facebook"></i>
+                    Share on Facebook
                 </a>
             </div>
         </div>

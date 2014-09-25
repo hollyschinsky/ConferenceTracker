@@ -13,15 +13,28 @@
           <span class="input-label">Password</span>
           <input type="password" ng-model="loginData.password">
         </label>
-        <label class="item">
-          <button class="button button-block button-positive" ng-click="doLogin()" type="submit">Log in</button>
+        <label class="item btnLogin">
+          <button class="button icon-left button-balanced ion-log-in btn" ng-click="doLogin()" type="submit">Sign in</button>
         </label>
-        <label class="item">
-          <button class="button button-block button-positive" ng-click="fbLogin()">
-              Login with Facebook
+        <label class="item btnLogin">
+          <button class="button  icon-left ion-social-facebook button-positive btn" ng-click="fbLogin()">
+              Sign in with Facebook
           </button>
         </label>
-        <label ng-model="loginMsg" class="padLbl" ng-class="{'assertive': !login.result,'balanced':login.result}">{{loginMsg}}</label>
+        <label class="item btnLogin">
+          <button class="button icon-left ion-social-twitter button-calm btn" ng-click="twLogin()">
+              Sign in with Twitter
+          </button>
+        </label>
+        <label class="item btnLogin">
+          <button class="button icon-left ion-social-linkedin button-royal btn" ng-click="liLogin()">
+              Sign in with LinkedIn
+          </button>
+        </label>
+        <label ng-model="loginMsg" class="padLbl" ng-class="{'assertive': !login.result,'balanced':login.result}">
+            {{loginMsg}}
+        </label>
+
       </div>
     </form>
   </ion-content>

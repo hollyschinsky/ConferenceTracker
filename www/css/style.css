@@ -67,3 +67,15 @@
     white-space: normal;
     padding-left: 50px;
 }
+
+.fave {
+   color: red;
+}
+.btn {
+    width: 220px;
+    margin:0 auto;
+    display:block;
+}
+.item.btnLogin {
+    padding: 4px;
+}
