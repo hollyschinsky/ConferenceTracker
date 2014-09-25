@@ -96,6 +96,12 @@ angular.module('conference.controllers', ['conference.services'])
 
     // Logout
     $scope.logout = function() {
+        var fbConnected = false;
+        FacebookService.getStatus(function (result) {
+            if (result.status == 'connected')
+                fbConnected = true;
+        })
+
         // If Twitter Logged in
         if (TwitterService.isReady()) {
             //sign out clears the OAuth cache, the user will have to reauthenticate when returning
@@ -109,13 +115,13 @@ angular.module('conference.controllers', ['conference.services'])
             $scope.user = null;
             $scope.msg = "Linkedin logout success"
         }
-        // There's only one callback in the openFB logout()...
-        else if (window.sessionStorage.fbtoken) {
-          openFB.logout(function (msg) {
-              $scope.user = null;
-              $scope.msg = "Facebook logout success"
-          })
+        else if (fbConnected) {
+            FacebookService.logout(function(rsp){
+                $scope.user = null;
+                $scope.msg = "Facebook logout success"
+            })
         }
+
         else $scope.msg = "Logout success";
 
         $scope.msgModal.show();
@@ -273,41 +279,32 @@ angular.module('conference.controllers', ['conference.services'])
 
 .controller('ProfileCtrl', function($scope, FacebookService, $cordovaDialogs, TwitterService, LinkedInService) {
     $scope.user = {};
+    var fbConnected=false;
 
-    // Try to get user info if null (user will be populated if logged into Facebook)
-    if (TwitterService.isReady()){
-        TwitterService.getProfile().then(function(data) {
+    FacebookService.getStatus(function (result) {
+        if (result.status == 'connected')
+            fbConnected=true;
+    })
+
+    if (fbConnected) {
+        FacebookService.getProfile(function (user) {
+            $scope.user = user;
+            $scope.user.pic = "http://graph.facebook.com/" + user.id + "/picture?height=100&type=normal&width=100";
+        }, null);
+    }
+    else if (TwitterService.isReady()) {
+        TwitterService.getProfile().then(function (data) {
             $scope.user.pic = data.avatar;
             $scope.user.name = data.name;
             $scope.user.email = data.alias; // use this for now - it's actually screenname
         })
     }
     else if (LinkedInService.isReady()) {
-        //ProfileService.getLinkedInProfile(null,null);
-        LinkedInService.getProfile().then(function(data) {
+        LinkedInService.getProfile().then(function (data) {
             $scope.user.pic = data.avatar;
             $scope.user.name = data.firstname + " " + data.lastname;
             $scope.user.email = data.email;
         })
-    }
-    else if (window.sessionStorage.fbtoken!=undefined) {
-        FacebookService.getProfile(onSuccess, onFail);
-        function onSuccess(user) {
-            $scope.$apply(function () {
-                $scope.user = user;
-                $scope.user.pic = "http://graph.facebook.com/" + user.id + "/picture?height=100&type=normal&width=100";
-            })
-        }
-
-        function onFail(error) {
-            var msg = "Could not access Facebook for profile data: " + error.message;
-            if (error.code == 190) // Not authorized
-                msg = 'You must first login with Facebook for this feature.'
-
-            if ($cordovaDialogs) $cordovaDialogs.alert(msg, null, 'Error');
-
-            else alert(msg);
-        }
     }
     else {
         // Some Default User Info

@@ -26,7 +26,6 @@ app.service('FacebookService', function() {
         }
     }
 
-
     this.postFacebook = function (session, $cordovaDialogs) {
         openFB.api({
             method: 'POST',
@@ -56,10 +55,7 @@ app.service('FacebookService', function() {
             path: '/me',
             params: {fields: 'id,name,email'},
             success: function (user) {
-                //$rootScope.$apply(function () {
-                //$rootScope.user = user;
                 success(user);
-                //});
             },
             error: function (error) {
                 fail(error);
@@ -71,5 +67,9 @@ app.service('FacebookService', function() {
         fail = function (error) {
             failCB(error);
         }
+    }
+
+    this.getStatus = function(resultCB) {
+        openFB.getLoginStatus(resultCB);
     }
 })
