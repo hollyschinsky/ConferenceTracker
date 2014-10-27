@@ -6,15 +6,15 @@ title: Module 3&#58; Setting Up the Workshop Files
 
 1. Delete the contents of your project's **workshop/www** folder.
 
-1. Download the supporting files for this tutorial [here](https://github.com/ccoenraets/cordova-tutorial/archive/master.zip), or clone the repository:
+1. Download the supporting files for this tutorial [here](https://github.com/hollyschinsky/phonegap-tutorial/archive/master.zip), or clone the repository:
 
     ```
-    git clone https://github.com/ccoenraets/cordova-tutorial
+    git clone https://github.com/hollyschinsky/phonegap-tutorial
     ```
 
 1. If you downloaded the zip file, unzip it anywhere on your file system.
 
-1. Copy the contents of **starter-www** into your project's **workshop/www** folder.
+1. Copy the contents of **www** into your project's **workshop/www** folder.
 
 1. Build and test your application: 
     - If you have a Mobile SDK installed on your system repeat the steps in Module 2. 

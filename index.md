@@ -1,21 +1,26 @@
 ---
 layout: home
-title: Cordova / PhoneGap Workshop
+title: PhoneGap Workshop
 ---
-In this tutorial, you will learn strategies and best practices to build native-like mobile applications with
-HTML, JavaScript, and CSS. You will build an Apache Cordova (aka PhoneGap) Employee Directory application from scratch using the Single Page Architecture, HTML templates, touch events, and performance optimization techniques.
+In this workshop you will learn how to create a hybrid mobile application using your PhoneGap with HTML, JavaScript and CSS. you will learn about many best practices and performance optimization techniques along the way. 
+
+We'll be building a working Conference Application from scratch that manages a set of sessions and speakers. 
 
 ## What You Will Learn:
 
-- How to create and build (compile and package) a Cordova project using the CLI (Command Line Interface).
+- How to create and build (compile and package) a PhoneGap project using the CLI (Command Line Interface).
+
+- How to create a PhoneGap project using the PhoneGap Desktop App.
+
+- How to test a PhoneGap project using the PhoneGap Developer App on your mobile device.
 
 - How to use different data storage strategies.
 
-- How to use several Cordova APIs such as Geolocation, Contacts, and Camera.
+- How to build an application using a single-page architecture and HTML templates.
 
 - How to handle specific mobile challenges such as touch events, scrolling, styling, page transitions, etc.
 
-- How to build an application using a single-page architecture and HTML templates.
+- How to use several PhoneGap APIs via plugins.
 
 
 ## Requirements
@@ -24,7 +29,8 @@ HTML, JavaScript, and CSS. You will build an Apache Cordova (aka PhoneGap) Emplo
 
 - A working knowledge of HTML and JavaScript is assumed, but you don't need to be a JavaScript guru.
 
->A mobile device or a Mobile SDK is **not** a requirement for this tutorial. However, if you want to run and test the application on a mobile device or on an emulator for a mobile platform supported by Cordova, you need the Mobile SDK for that platform (iOS SDK, Android SDK, etc.) installed on your system. If you don't want to install a Mobile SDK, you'll be able to test your application in a browser on your computer.
+>A mobile device or a Mobile SDK is **not** a requirement for this tutorial. You will able to test your application in the browser or with the PhoneGap Developer App with some limitations. If you want the full support of the native APIs then you will need the mobile SDK for that platform (iOS SDK, Android SDK, etc.) installed on your system. 
+
 
 
 ## Issues
