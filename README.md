@@ -1,8 +1,36 @@
-ConferenceTracker
-=================
+PhoneGap Advanced Tutorial
+===========================
 
-Sample PhoneGap conference application. Built with Ionic/AngularJS and using Node/Express for REST services
+In this tutorial you will learn how to build a PhoneGap app written with Ionic/AngularJS and using a REST API of Node/ExpressJS for the data consumption.
 
+You will build is a conference/event application that allows you to view and search sessions and speakers and uses a variety of native plugins and provides many features including:
+
+1. Native Sharing 
+2. Native Calendar 
+3. Toast Notifications
+4. Status Bar Customization
+5. Keyboard Customization
+6. Device detection
+
+- Sorting
+- Filtering
+- Side Menu
+- OAuth.io for Twitter and LinkedIn
+- Adding Favorites
+- Facebook integration using a non-plugin approach
+- Add to native calendar
+- Share with native share system
+- Using native notifications
+- Modal
+- Popover
+- AngularJS Repeat
+
+
+
+
+
+https://github.com/oauth-io/oauth-js
+ 
 
 Setting up the Ionic App
 -------------------------
