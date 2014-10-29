@@ -1,55 +1,55 @@
-.modal2 {
-    min-height: 30px;
-    height: 30px;
-    text-align: left;
+/*.modal2 {*/
+    /*min-height: 30px;*/
+    /*height: 30px;*/
+    /*text-align: left;*/
 
-    font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;
-    vertical-align: middle;
+    /*font-family: "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif;*/
+    /*vertical-align: middle;*/
 
-    background-repeat: no-repeat;
-    background-position: 10px center;
-    background-color: #fefff3;
+    /*background-repeat: no-repeat;*/
+    /*background-position: 10px center;*/
+    /*background-color: #fefff3;*/
 
-    border-color: #c0c0c0;
-    border-radius: 3px;
-    border: 1px ridge;
-    background-repeat: no-repeat;
-    background-position: 10px center;
-    opacity: .7;
-    display: block;
-    position: absolute;
-    top: 350;
-    top: 20%;
-    right: 20%;
-    bottom: 20%;
-    left: 20%;
-    overflow: visible;
-    width: 65%; }
-    .modal.ng-leave-active {
-        bottom: 0; }
-    .platform-ios.platform-cordova .modal-wrapper .modal .bar-header:not(.bar-subheader) {
-        height: 44px; }
-    .platform-ios.platform-cordova .modal-wrapper .modal .bar-header:not(.bar-subheader) > * {
-        margin-top: 0; }
-    .platform-ios.platform-cordova .modal-wrapper .modal .tabs-top > .tabs, .platform-ios.platform-cordova .modal-wrapper .modal .tabs.tabs-top {
-        top: 44px; }
-    .platform-ios.platform-cordova .modal-wrapper .modal .has-header, .platform-ios.platform-cordova .modal-wrapper .modal .bar-subheader {
-        top: 44px; }
-    .platform-ios.platform-cordova .modal-wrapper .modal .has-subheader {
-        top: 88px; }
-    .platform-ios.platform-cordova .modal-wrapper .modal .has-tabs-top {
-        top: 93px; }
-    .platform-ios.platform-cordova .modal-wrapper .modal .has-header.has-subheader.has-tabs-top {
-        top: 137px; }
+    /*border-color: #c0c0c0;*/
+    /*border-radius: 3px;*/
+    /*border: 1px ridge;*/
+    /*background-repeat: no-repeat;*/
+    /*background-position: 10px center;*/
+    /*opacity: .7;*/
+    /*display: block;*/
+    /*position: absolute;*/
+    /*top: 350;*/
+    /*top: 20%;*/
+    /*right: 20%;*/
+    /*bottom: 20%;*/
+    /*left: 20%;*/
+    /*overflow: visible;*/
+    /*width: 65%; }*/
+    /*.modal.ng-leave-active {*/
+        /*bottom: 0; }*/
+    /*.platform-ios.platform-cordova .modal-wrapper .modal .bar-header:not(.bar-subheader) {*/
+        /*height: 44px; }*/
+    /*.platform-ios.platform-cordova .modal-wrapper .modal .bar-header:not(.bar-subheader) > * {*/
+        /*margin-top: 0; }*/
+    /*.platform-ios.platform-cordova .modal-wrapper .modal .tabs-top > .tabs, .platform-ios.platform-cordova .modal-wrapper .modal .tabs.tabs-top {*/
+        /*top: 44px; }*/
+    /*.platform-ios.platform-cordova .modal-wrapper .modal .has-header, .platform-ios.platform-cordova .modal-wrapper .modal .bar-subheader {*/
+        /*top: 44px; }*/
+    /*.platform-ios.platform-cordova .modal-wrapper .modal .has-subheader {*/
+        /*top: 88px; }*/
+    /*.platform-ios.platform-cordova .modal-wrapper .modal .has-tabs-top {*/
+        /*top: 93px; }*/
+    /*.platform-ios.platform-cordova .modal-wrapper .modal .has-header.has-subheader.has-tabs-top {*/
+        /*top: 137px; }*/
 
 .padLbl {
     /*margin-left: auto;*/
     /*margin-right: auto;*/
     padding: 5px;
 }
-.login {
-    margin-top: 10px;
-}
+/*.login {*/
+    /*margin-top: 10px;*/
+/*}*/
 .item .title {
     white-space: normal;
     font-size: 14px;
@@ -79,3 +79,57 @@
 .item.btnLogin {
     padding: 4px;
 }
+
+.addCal {
+    float: right;
+    /*color: #1f5880;*/
+    font-size: 20px;
+}
+.tab-item {
+    color: #1f5880;
+    font-weight: bold;
+}
+h1, h6 {
+    font-family: 'Anton', serif;
+}
+.pic {
+    max-height: 120px;
+    max-width: 120px;
+}
+h1 .title {
+    font-size: 19px;
+}
+h6 span {
+    font-family: 'Arial', serif;
+}
+.popover {
+    height: 200px;
+    color: #000000;
+}
+.popover a {
+    text-decoration: none;
+}
+.popover .padLbl{
+    margin-top: 30px;
+}
+.popover .about {
+    height: 34px;
+    background-color: #444444;
+    width: 100%;
+    position: absolute;
+    top: 0;
+}
+.popover .about > h6 {
+    font-size: 15px;
+    color: #ffffff;
+    text-align: center;
+}
+.platform-ios .popover-arrow::after {
+    background-color: #444444;
+}
+/*.title img {*/
+    /*vertical-align:middle;*/
+/*}*/
+/*.item {*/
+    /*background-color: #dddddd;*/
+/*}*/
