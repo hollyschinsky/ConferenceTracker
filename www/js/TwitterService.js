@@ -1,31 +1,30 @@
 /**
  * Created by hollyschinsky on 9/11/14.
  */
-app.factory('TwitterService', function($q,$cordovaDialogs) {
+app.factory('TwitterService', function($q) {
 
     var authorizationResult = false;
-
+    var isInit = false;
+    var initialize =  function() {
+        //initialize OAuth.io with public key of the application
+        OAuth.initialize('Isxt9U4oFguZVUDsGCddTYpwp6A');
+        // try to create an authorization result when the page loads so the user won't
+        // have to click the twitter button again
+        authorizationResult = OAuth.create('twitter');
+        isInit = true;
+    }
     return {
-        initialize: function() {
-            //initialize OAuth.io with public key of the application
-            OAuth.initialize('Isxt9U4oFguZVUDsGCddTYpwp6A');
-            // try to create an authorization result when the page loads so the user won't
-            // have to click the twitter button again
-            authorizationResult = OAuth.create('twitter');
-
-        },
         isReady: function() {
             return (authorizationResult);
         },
         connectTwitter: function() {
+            if (!isInit) initialize();
             var deferred = $q.defer();
-            //cache means to execute the callback if the tokens are already present
             OAuth.popup('twitter', function(error, result) {
                 if (!error) {
                     authorizationResult = result;
                     deferred.resolve();
-                } else $cordovaDialogs.alert("An error occurred while connecting to twitter " + error,null,'Error');
-
+                } else console.log("An error occurred while connecting to twitter " + error,null,'Error');
             });
             return deferred.promise;
         },
@@ -56,7 +55,6 @@ app.factory('TwitterService', function($q,$cordovaDialogs) {
             });
             return deferred.promise;
         }
-
     }
 
 });

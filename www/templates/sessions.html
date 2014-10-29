@@ -1,3 +1,4 @@
+<!--<ion-view title='<img src="../img/phonegap_wings.png" width="32" height="32">PhoneGap Day 2014'>-->
 <ion-view title="Session Schedule">
   <ion-nav-buttons side="left">
       <button menu-toggle="left" class="button button-icon icon ion-navicon"></button>
@@ -13,23 +14,24 @@
                autocorrect="off" ng-change="setFilter()">
         <button class="button button-clear" ng-click="clear()">X</button>
       </div>
-      <!--<button class="button button-clear" ng-click="searchAll()">Search</button> Not really making sense with filters -->
   </ion-header-bar>
 
   <ion-content class="has-header has-subheader">
       <ion-list class="list">
           <label class="item item-input item-select">
-              <div class="input-label">
-                  <strong>Filter By</strong>
+              <div class="input-label pull-right">
+                  <strong>Sort By</strong>
               </div>
-              <select ng-model="field" ng-change="setFilter()">
+              <select ng-model="field">
                   <option value="all" ng-selected=true>All</option>
                   <option value="title">Title</option>
                   <option value="speaker">Speaker</option>
                   <option value="description">Description</option>
+                  <option value="room">Room</option>
+
               </select>
           </label>
-          <ion-item ng-repeat="session in sessions | filter:search" type="item-text-wrap"
+          <ion-item ng-repeat="session in sessions | filter:search | orderBy: field" type="item-text-wrap"
                     class="item-avatar"
                     href="#/app/sessions/{{session.id}}"><img src="pics/{{session.pic}}"/>
                     <p class="title">{{session.title}}</p>

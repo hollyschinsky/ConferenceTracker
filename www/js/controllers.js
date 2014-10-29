@@ -1,10 +1,8 @@
 angular.module('conference.controllers', ['conference.services'])
 
 // General App Handler - no specific route specified - so it handles login methods invoked from menu by default
-.controller('AppCtrl', function($scope, $ionicModal, $timeout, FacebookService, TwitterService, LinkedInService) {
-    // Initialize our social services
-    TwitterService.initialize();
-    LinkedInService.initialize();
+.controller('AppCtrl', function($scope, $ionicModal, $ionicLoading, $timeout, FacebookService, TwitterService, LinkedInService) {
+    console.log("App ctrl initialize");
 
     // Init the login modal
     $scope.loginData = {};
@@ -42,24 +40,16 @@ angular.module('conference.controllers', ['conference.services'])
          $scope.loginMsg = "Login successful!";
          $scope.login.result = true;
      }
-      else {
-         $scope.loginMsg = "Please enter a username and password";
+     else {
+         $scope.loginMsg = "Please enter a valid username and password.";
          $scope.login.result = false;
      }
     };
-
-    $ionicModal.fromTemplateUrl('templates/msgModal.html', {
-        scope: $scope
-    }).then(function(modal) {
-        $scope.msgModal = modal;
-    });
-
 
     // Facebook Login (actual Facebook login, have to use your FB credentials)
     $scope.fbLogin = function() {
         FacebookService.login(rspCallback);
         function rspCallback(response) {
-            console.log("RESP " + response);
             if (response.status === 'connected') {
                 $scope.loginMsg = "Facebook login succeeded!";
                 $scope.login.result = true;
@@ -74,6 +64,7 @@ angular.module('conference.controllers', ['conference.services'])
 
     // Twitter Login
     $scope.twLogin = function() {
+        //TwitterService.initialize();
         TwitterService.connectTwitter().then(function () {
             if (TwitterService.isReady()) {
                 $scope.loginMsg="Twitter login succeeded!";
@@ -85,6 +76,7 @@ angular.module('conference.controllers', ['conference.services'])
 
      // LinkedIn Login
     $scope.liLogin = function(event) {
+        LinkedInService.initialize();
         LinkedInService.connectLinkedin().then(function () {
             if (LinkedInService.isReady()) {
                 $scope.loginMsg="LinkedIn login succeeded!";
@@ -107,32 +99,60 @@ angular.module('conference.controllers', ['conference.services'])
             //sign out clears the OAuth cache, the user will have to reauthenticate when returning
             TwitterService.clearCache();
             $scope.user = null;
-            $scope.msg = "Twitter logout success"
+            $scope.msg = "Twitter logout success!"
         }
+
         else if (LinkedInService.isReady()) {
             //sign out clears the OAuth cache, the user will have to reauthenticate when returning
             LinkedInService.clearCache();
             $scope.user = null;
-            $scope.msg = "Linkedin logout success"
+            $scope.msg = "LinkedIn logout success!"
         }
+
         else if (fbConnected) {
             FacebookService.logout(function(rsp){
                 $scope.user = null;
-                $scope.msg = "Facebook logout success"
+                $scope.msg = "Facebook logout success!"
             })
         }
 
-        else $scope.msg = "Logout success";
+        else {
+            $scope.msg = "Logout success!";
+        }
+        showToast($scope.msg);
 
-        $scope.msgModal.show();
+    }
+
+    function showToast(message) {
+        if (window.plugins && window.plugins.toast) {
+            window.plugins.toast.showShortCenter(message);
+        }
+        else $ionicLoading.show({ template: message, noBackdrop: true, duration: 2000 });
     }
 })
 
 .controller('SessionsCtrl', function($scope, SessionService, $ionicPopover) {
 
-    // Get all the sessions initially
+    // Get all the sessions
     $scope.sessions = SessionService.query();
 
+    // Filter sessions by entering text in field and selecting from drop-down
+    $scope.setFilter = function() {
+        var search = $scope.searchTxt;
+        var field = this.field;
+
+        if (field === 'title')
+            $scope.search = {title:search};
+        else if (field === 'speaker')
+            $scope.search = {speaker:search};
+        else if (field === 'description')
+            $scope.search = {description:search};
+        else $scope.search = {$:search}; // ALL cases
+    }
+
+    $scope.clear = function() {$scope.searchTxt=""};
+
+    // About version popover handling
     $ionicPopover.fromTemplateUrl('templates/about-popover.html', {
         scope: $scope
     }).then(function(popover) {
@@ -151,35 +171,12 @@ angular.module('conference.controllers', ['conference.services'])
     $scope.$on('$destroy', function() {
         $scope.popover.remove();
     });
-
-    // Filter sessions by entering text in field and selecting from drop-down
-    $scope.setFilter = function() {
-        var search = $scope.searchTxt;
-        var field = this.field;
-
-        if (field === 'title')
-            $scope.search = {title:search};
-        else if (field === 'speaker')
-            $scope.search = {speaker:search};
-        else if (field === 'description')
-            $scope.search = {description:search};
-        else $scope.search = {$:search}; // ALL cases
-    }
-
-    $scope.clear = function() {$scope.searchTxt=""};
 })
 
-.controller('SessionCtrl', function($scope, $stateParams, $q, $ionicModal, $timeout, SessionService, FavoriteService,
-                                    $cordovaDialogs, TwitterService, FacebookService) {
+.controller('SessionCtrl', function($scope, $stateParams, $q, $ionicLoading, $timeout, SessionService, FavoriteService,
+                                    TwitterService, FacebookService) {
 
     $scope.favorites = FavoriteService.favorites;
-
-    // Create the modal that we will need to display a message popupFa
-    $ionicModal.fromTemplateUrl('templates/msgModal.html', {
-        scope: $scope
-    }).then(function(modal) {
-        $scope.msgModal = modal;
-    });
 
     // When we get the session resource back, check to see if it matches any in the favorites and set a flag so the
     // heart displays red.
@@ -196,58 +193,78 @@ angular.module('conference.controllers', ['conference.services'])
         if (window.sessionStorage.fbtoken!=undefined) {
             FacebookService.postFacebook(session);
         }
-        else $cordovaDialogs.alert('You must first login with Facebook to use this feature.',null,'Info');
+        else alert('You must first login with Facebook to use this feature.');
     }
 
-    $scope.follow = function(screenname) {
+    $scope.follow = function() {
+        var screenname = $scope.session.twitter_id;
         if (TwitterService.isReady()) {
             TwitterService.follow(screenname).then(function (data) {
                 console.log("Speaker has " + data.followers_count + " followers")
-                $cordovaDialogs.alert('You are now following ' + screenname, null, 'Info');
+                showToast('You are now following ' + screenname + " (current follower count " + data.followers_count + ")");
             });
         }
+        else alert('You must first login with Twitter to use this feature.');
+    }
+
+    $scope.addFavorite = function() {
+        var currentSession = $scope.session;
+        if (!currentSession.isFave)
+            FavoriteService.addFave(currentSession,successCB,errorCB);
         else {
-            $cordovaDialogs.alert('You must first login with Twitter to use this feature.',null,'Info');
-            TwitterService.connectTwitter().then(function () {
-                $cordovaDialogs.alert('You are now following ' + screenname, null, 'Info');
-            })
+            currentSession.isFave=false;
+            FavoriteService.removeFave(currentSession);
         }
     }
+    function errorCB() { showToast('Session was already added.') }
+    function successCB(session) {showToast('Session added to favorites!'); session.isFave=true; }
 
-    $scope.addFavorite = function (item) {
-        if (!item.isFave)
-            FavoriteService.addFave(item,successCB,errorCB);
-        else {
-            item.isFave=false;
-            FavoriteService.removeFave(item);
+    function showToast(message) {
+        if (window.plugins && window.plugins.toast) {
+            window.plugins.toast.showShortCenter(message);
         }
-
-        $timeout(function() {
-            $scope.closeMsg();
-        }, 1000);
-    }
-    function errorCB() {
-        $scope.msg = 'Session was already added';
-        $scope.showMsg();
-    }
-    function successCB(session) {
-        $scope.msg = 'Session added to favorites';
-        $scope.showMsg();
-        session.isFave=true;
+        else $ionicLoading.show({ template: message, noBackdrop: true, duration: 2000 });
     }
 
-    $scope.showMsg = function() {
-        $scope.msgModal.show();
-    };
+    $scope.addToCalendar = function() {
+        if (window.plugins && window.plugins.calendar) {
+            var hour = $scope.session.time.substring(0,$scope.session.time.indexOf(':'));
+            if ($scope.session.time.indexOf("pm")>-1)
+                hour = parseInt(hour)+12;
+            var today = new Date();
+            console.log("Date year" + today.getFullYear() + " mo " + today.getMonth()+ " day " + today.getDate());
+            var startDate = new Date(today.getFullYear(),today.getMonth(),today.getDate(),hour,00,00);
+            var endDate = new Date();
+            endDate.setTime(startDate.getTime() + 3600000);//one hour
 
-    // Triggered in the fave modal to close it
-    $scope.closeMsg = function() {
-        $scope.msgModal.hide();
-    };
+            window.plugins.calendar.createEvent($scope.session.title, $scope.session.room, $scope.session.description, startDate, endDate,
+                function () {
+                    alert($scope.session.title + " has been added to your calendar.");
+                },
+                function (error) {
+                    console.log("Calendar fail " + error);
+                });
+        }
+        else console.log("Calendar plugin not available.");
+    }
+
+    $scope.shareNative = function() {
+        if (window.plugins && window.plugins.socialsharing) {
+            window.plugins.socialsharing.share("I'll be attending the session: " + $scope.session.title + ".",
+                'PhoneGap Day 2014', null, "http://pgday.phonegap.com/us2014",
+                function() {
+                    console.log("Success")
+                },
+                function (error) {
+                    console.log("Share fail " + error)
+                });
+        }
+        else console.log("Share plugin not available");
+    }
 })
 
-// Let's use the Favorites Service to filter the list that we've marked...
-.controller('FavoritesCtrl', function($scope, $cordovaDialogs, FavoriteService, FacebookService, TwitterService) {
+// Uses the Favorites Service to filter the list that we've marked...
+.controller('FavoritesCtrl', function($scope, $ionicLoading, FavoriteService, FacebookService, TwitterService) {
     $scope.favorites = FavoriteService.favorites;
     $scope.showDelete = false;
 
@@ -256,28 +273,40 @@ angular.module('conference.controllers', ['conference.services'])
             $scope.showDelete=true
         else ($scope.showDelete=false)
     }
-    $scope.share = function(fave) {
-        if (window.sessionStorage.fbtoken!=undefined) {
-            FacebookService.postFacebook(fave);
+
+    $scope.shareNative = function() {
+        if (window.plugins && window.plugins.socialsharing) {
+            window.plugins.socialsharing.share("I'll be attending the session: " + $scope.session.title + ".",
+                'PhoneGap Day 2014', null, "http://pgday.phonegap.com/us2014",
+                function() {
+                    console.log("Success")
+                },
+                function (error) {
+                    console.log("Share fail " + error)
+                });
         }
-        else $cordovaDialogs.alert('You must first login with Facebook to use this feature.',null,'Info');
+        else console.log("Share plugin not available");
     }
 
     $scope.follow = function(screenname) {
         if (TwitterService.isReady()) {
             TwitterService.follow(screenname).then(function (data) {
                 console.log("Speaker has " + data.followers_count + " followers");
-                $cordovaDialogs.alert('You are now following ' + screenname, null, 'Info');
+                showToast('You are now following ' + screenname + ' (total number of followers '+ data.followers_count+')');
             });
         }
-        else {
-            $cordovaDialogs.alert('You must first login with Twitter to use this feature.',null,'Info');
-            TwitterService.connectTwitter();
+        else alert('You must first login with Twitter to use this feature.');
+    }
+
+    function showToast(message) {
+        if (window.plugins && window.plugins.toast) {
+            window.plugins.toast.showShortCenter(message);
         }
+        else $ionicLoading.show({ template: message, noBackdrop: true, duration: 2000 });
     }
 })
 
-.controller('ProfileCtrl', function($scope, FacebookService, $cordovaDialogs, TwitterService, LinkedInService) {
+.controller('ProfileCtrl', function($scope, FacebookService, TwitterService, LinkedInService) {
     $scope.user = {};
     var fbConnected=false;
 
@@ -308,8 +337,8 @@ angular.module('conference.controllers', ['conference.services'])
     }
     else {
         // Some Default User Info
-        $scope.user.name = "Anton Phillips";
-        $scope.user.email = "anton.phillips@agilesystems.com";
+        $scope.user.name = "Ryan Phillips";
+        $scope.user.email = "ryan.phillips@agilesystems.com";
         $scope.user.pic = "pics/default-user.jpg"
     }
 })

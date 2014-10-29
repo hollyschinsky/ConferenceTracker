@@ -21,7 +21,6 @@ app.factory('LinkedInService', function($q) {
         },
         connectLinkedin: function() {
             var deferred = $q.defer();
-            //cache means to execute the callback if the tokens are already present
             OAuth.popup('linkedin', function(error, result) {
                 if (!error) {
                     authorizationResult = result;

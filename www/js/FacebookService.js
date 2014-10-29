@@ -26,7 +26,7 @@ app.service('FacebookService', function() {
         }
     }
 
-    this.postFacebook = function (session, $cordovaDialogs) {
+    this.postFacebook = function (session, $ionicLoading) {
         openFB.api({
             method: 'POST',
             path: '/me/feed',
@@ -34,18 +34,16 @@ app.service('FacebookService', function() {
                 message: "I'll be attending: '" + session.title + "' by " + session.speaker
             },
             success: function () {
-                if ($cordovaDialogs)
-                    $cordovaDialogs.alert('This session has been shared on Facebook',null,'Success');
-
-                else alert('This session has been shared on Facebook');
+                showToast('This session has been shared on Facebook',null,'Success');
             },
             error: function (error) {
                 var msg = 'An error occurred while sharing this session on Facebook';
                 if (error.code == 190)
                     msg = ' You must first login with Facebook to use this feature.'
-                if ($cordovaDialogs)
-                    $cordovaDialogs.alert(msg,null,'Error');
-                else alert(msg);
+//                if ($cordovaDialogs)
+//                    $cordovaDialogs.alert(msg,null,'Error');
+                //else alert(msg);
+                showToast(msg);
             }
         });
     }
@@ -71,5 +69,12 @@ app.service('FacebookService', function() {
 
     this.getStatus = function(resultCB) {
         openFB.getLoginStatus(resultCB);
+    }
+
+    function showToast(message) {
+        if (window.plugins && window.plugins.toast) {
+            window.plugins.toast.showShortCenter(message);
+        }
+        else $ionicLoading.show({ template: message, noBackdrop: true, duration: 2000 });
     }
 })

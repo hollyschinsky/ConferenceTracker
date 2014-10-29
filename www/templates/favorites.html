@@ -6,12 +6,13 @@
         <button class="button button-icon icon ion-ios7-minus-outline" ng-click="showBtn()"></button>
   </ion-nav-buttons>
   <ion-content class="has-header">
+      <p class="padLbl" ng-show="favorites.length==0">No favorites have been added.</p>
       <ion-list show-delete="showDelete">
           <ion-item ng-repeat="favorite in favorites" type="item-text-wrap"
                     class="item-avatar"
                     href="#/app/sessions/{{favorite.id}}"><img src="pics/{{favorite.pic}}"/>
-                    {{favorite.title}}
-              <ion-option-button class="button-positive"
+                    <p class="title">{{favorite.title}}</p>
+              <ion-option-button class="button-calm"
                                  ng-click="share(favorite)">
                   Share
               </ion-option-button>

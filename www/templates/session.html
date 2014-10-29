@@ -3,28 +3,36 @@
         <div class="list">
             <div class="item">
                 <div class="item-avatar"> <img src="pics/{{session.pic}}"/></div>
-                <div class="sessionTitle">
-                    <h2>{{session.title}}</h2>
+                <div class="sessionTitle"><h2>{{session.title}}</h2>
                     <p>{{session.speaker|uppercase}}</p>
                 </div>
-                <p>{{session.room}} | {{session.time}}</p>
+
+                <p>{{session.room}} | {{session.time}}
+                    <a class="tab-item addCal" ng-click="addToCalendar()">
+                    <i class="icon ion-calendar" style="font-size: 16px">
+                        Add</i></a></button>
+                </p>
             </div>
             <div class="item item-body">
                 <p>{{session.description}}</p>
             </div>
             <div class="item tabs tabs-secondary tabs-icon-left">
-                <a class="tab-item" ng-click="addFavorite(session)">
+                <a class="tab-item" ng-click="addFavorite()">
                     <i class="icon ion-heart" ng-class="{'fave': session.isFave}"></i>
                     Favorite
                 </a>
-                <a class="tab-item" ng-click="follow(session.twitter_id)">
+                <a class="tab-item" ng-click="follow()">
                     <i class="icon ion-social-twitter"></i>
                     Follow
                 </a>
-                <a class="tab-item" ng-click="share(session)">
-                    <i class="icon ion-social-facebook"></i>
+                <a class="tab-item" ng-click="shareNative()">
+                    <i class="icon ion-share"></i>
                     Share
                 </a>
+                <!--<a class="tab-item" ng-click="share(session)">-->
+                    <!--<i class="icon ion-social-facebook"></i>-->
+                    <!--Share-->
+                <!--</a>-->
             </div>
         </div>
     </ion-content>

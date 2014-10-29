@@ -2,10 +2,10 @@ angular.module('conference.services', ['ngResource'])
 
 .factory('SessionService', function ($resource) {
     // Node backend - works when running on emulator, browser and with PhoneGap Dev App
-    return $resource('http://localhost:5000/sessions/:sessionId');
+    //return $resource('http://localhost:5000/sessions/:sessionId');
 
-    // When testing directly on device using $ionic run, need to use the URL to your network such as below
-    // $resource('http://192.168.1.25:5000/sessions/:sessionId');
+    // When testing directly on device using ios run, need to use the URL to your network such as below
+    return $resource('http://192.168.1.5:5000/sessions/:sessionId');
 })
 
 .service('FavoriteService', ['$filter', function($filter) {

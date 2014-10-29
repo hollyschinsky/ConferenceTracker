@@ -1,22 +1,30 @@
-// Ionic Starter App
-
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires' 'conference.controllers' is found in controllers.js
-//var app = angular.module('conference', ['ionic', 'conference.controllers', 'ngCordova.plugins.device',
-  //  'ngCordova.plugins.keyboard','ngCordova.plugins.statusbar', 'ngCordova.plugins.dialogs'])
-var app = angular.module('conference', ['ionic', 'conference.controllers', 'ngCordovaMocks'])
+var app = angular.module('conference', ['ionic', 'conference.controllers'])
 
     .run(function($ionicPlatform) {
         $ionicPlatform.ready(function() {
-            // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-            // for form inputs)
+            // *** Do specific plugin related things here now on platform ready
+            console.log("Platform ready");
+
+            // Override the default HTML alert with native dialog
+            if (navigator.notification) {
+                window.alert = function (message) {
+                    navigator.notification.alert(
+                        message,    // message
+                        null,       // callback
+                        "Conference Tracker", // title
+                        'OK'        // buttonName
+                    );
+                };
+            }
+
+            // In Ionic the accessory bar is hidden by default. Do not hide the keyboard accessory bar for this app
+            // so the drop-down form input can be used properly.
             if(window.cordova && window.cordova.plugins.Keyboard) {
                 cordova.plugins.Keyboard.hideKeyboardAccessoryBar(false);
             }
+
             if(window.StatusBar) {
-                // org.apache.cordova.statusbar required
-                StatusBar.styleDefault();
+                StatusBar.styleLightContent(); //status bar will have white text and icons
             }
         });
     })
