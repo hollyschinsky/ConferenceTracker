@@ -9,7 +9,7 @@ This tutorial builds upon the previous [Beginning PhoneGap Workshop](hollyschins
 Conference application using no particular MVC framework. In this advanced version we will build an app using a more opinionated approach 
 with Cordova/Ionic/AngularJS and a Node/ExpressJS REST API backend data service.
 
-![](images/app/app-overview.jpg)
+![](app-overview.jpg)
 
 Throughout this tutorial you will be advised on how to handle different challenges and learn many useful tips. This app implements the 
 following features that you will learn to add in the following lessons: 
@@ -62,6 +62,7 @@ The following plugins will be added along the way to help provide the above feat
 5. Using Google font libraries
 6. How to setup OAuth.io with your social media accounts
 
+![](app-mix.jpg)
 >The plugin details will be covered along the way. Take a look at the [Official Cordova Plugin Registry](http://plugins.cordova.io) here to explore further as well. 
 
  
