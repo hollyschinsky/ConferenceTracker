@@ -12,38 +12,29 @@ In this section, we add the ability to share the session details through the dev
     
     ```
 
-1. In **index.html**, add the following tab to the tab bar in the *session-tpl* template:
+1. In **SessionView.html**, wire the share tab to the *shareNative* function in the controllers.js via ng-click:
 
     ```
-    <div class="shareBtn tab-item">
-        <span class="icon icon-share"></span>
-        <span class="tab-label">Share</span>
-    </div>
+   <a class="tab-item" ng-click="shareNative()">
+        <i class="icon ion-share"></i> Share
+    </a>
     ```
 
-1. In the **initialize()** function of *SessionView*, register an event listener for the click event of the *share* tab.
+1. Open **controllers.js** and define the *shareNative* function to the sessionsCtrl as follows:
 
     ```
-    this.$el.on('click', '.shareBtn', this.share);
-    ```
-
-    > Make sure you add this line as the last line of the **initialize()** function (after this.$el is assigned).
-
-1. While in *SessionView*, define the *share* event handler as follows:
-
-    ```
-    this.share = function() {
-      if (window.plugins.socialsharing) {
-          window.plugins.socialsharing.share("I'll be attending the session: " + session.title + ".",
-              'PhoneGap Day 2014', null, "http://pgday.phonegap.com/us2014",
-              function () {
-                  console.log("Success")
-              },
-              function (error) {
-                  console.log("Share fail " + error)
-              });
-      }
-      else console.log("Share plugin not found");
+    $scope.shareNative = function() {
+            if (window.plugins && window.plugins.socialsharing) {
+                window.plugins.socialsharing.share("I'll be attending the session: " + $scope.session.title + ".",
+                    'PhoneGap Day 2014', null, "http://pgday.phonegap.com/us2014",
+                    function() {
+                        console.log("Success")
+                    },
+                    function (error) {
+                        console.log("Share fail " + error)
+                    });
+            }
+            else console.log("Share plugin not available");
     }
     ```
 
