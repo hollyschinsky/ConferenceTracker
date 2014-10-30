@@ -44,15 +44,16 @@ following features that you will learn to add in the following lessons:
 ## Plugins
 The following plugins will be added along the way to help provide the above features:
 
-1. Social Share Plugin 
-2. Calendar Plugin
-3. Toast Notification Plugin
-4. Status Bar Plugin
-5. Keyboard Plugin
-6. Device Plugin
-7. InAppBrowser (for social media OAuth)
-8. Console Plugin
-9. NetworkInformation/Connection Plugin
+1. [Social Share Plugin](https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin/) 
+2. [Calendar Plugin](https://github.com/EddyVerbruggen/Calendar-PhoneGap-Plugin.git)
+3. [Toast Notification Plugin](https://github.com/EddyVerbruggen/Toast-PhoneGap-Plugin)
+4. [Status Bar Plugin](https://github.com/apache/cordova-plugin-statusbar)
+5. [Keyboard Plugin](https://github.com/driftyco/ionic-plugins-keyboard)
+6. [Device Plugin](https://github.com/apache/cordova-plugin-device)
+7. [InAppBrowser/OAuth](https://github.com/oauth-io/oauth-phonegap) - for social media OAuth support 
+8. [Console Plugin](https://github.com/apache/cordova-plugin-console)
+9. [NetworkInformation/Connection Plugin](https://github.com/apache/cordova-plugin-network-information)
+10. [OAuth Plugin](https://github.com/oauth-io/oauth-phonegap)
 
 ## Other Skills You Will Learn
 1. Setting icons and splash screens
@@ -86,6 +87,14 @@ into any problem or have a suggestion to improve this workshop.
     data-size="large" data-lang="en">Follow 
     @devgirlfl</a>
     <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+## Credit
+
+- This tutorial also builds upon the basic [Ionic Tutorial](ccoenraets.github.io/ionic-tutorial) built by [Christophe Coenraets](http://coenraets.org). 
+
+## Disclaimer!!! 
+- This tutorial is still a work in progress and modules continuing to be written though [the GitHub project has the entire app](https://github.com/hollyschinsky/ConferenceTracker) and code to support the features mentioned above. Please continue, please continue to check
+ back for more explanation of how each feature was implemented specifically as I'm working on adding the details asap.   
 
 <div class="row" style="margin-top:40px;">
 <div class="col-sm-12">
