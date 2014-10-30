@@ -36,12 +36,13 @@ var openFB = (function () {
         // below.
 
         // HOLLY NOTES - Use when testing with PG Dev App or browser via an ionic serve
-        oauthRedirectURL = baseURL + '/oauthcallback.html',
-        logoutRedirectURL = baseURL + '/logoutcallback.html',
+        //oauthRedirectURL = baseURL + '/oauthcallback.html',
+        //logoutRedirectURL = baseURL + '/logoutcallback.html',
 
-        // HOLLY NOTES - Use when testing on device or emulator directly with $ ionic run ios for instance
-        //oauthRedirectURL = 'http://localhost:8100/oauthcallback.html',
-        //logoutRedirectURL = 'http://192.168.1.25:8100/logoutcallback.html',
+        // HOLLY NOTES - Use when testing on device or emulator directly with $ ionic run ios
+        // Has to be port 8100 for Ionic, if using straight cordova this is not going to work
+        oauthRedirectURL = 'http://localhost:8100/oauthcallback.html',
+        logoutRedirectURL = 'http://localhost:8100/logoutcallback.html',
 
         // Because the OAuth login spans multiple processes, we need to keep the login callback function as a variable
         // inside the module instead of keeping it local within the login function.
