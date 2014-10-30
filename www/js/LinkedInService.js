@@ -11,7 +11,8 @@ app.factory('LinkedInService', function($q) {
     return {
         initialize: function() {
             //initialize OAuth.io with public key of the application
-            OAuth.initialize('your-public-key-from-oauth');
+            OAuth.initialize('your-public-key');
+
             // try to create an authorization result when the page loads so the user won't
             // have to click the twitter button again
             authorizationResult = OAuth.create('linkedin');

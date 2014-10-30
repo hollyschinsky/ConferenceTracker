@@ -6,7 +6,7 @@ var app = angular.module('conference', ['ionic', 'conference.AppCtrl', 'conferen
             // *** Do specific plugin related things here now on platform ready
             console.log("Platform ready");
 
-            // Override the default HTML alert with native dialog
+            // Override the default HTML alert with native dialog - requires the cordova dialogs plugin
             if (navigator.notification) {
                 window.alert = function (message) {
                     navigator.notification.alert(
