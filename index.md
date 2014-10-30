@@ -1,27 +1,68 @@
 ---
 layout: home
-title: PhoneGap Workshop
+title: PhoneGap Advanced Tutorial - Building a PhoneGap App with Ionic/AngularJS+NodeJS+ExpressJS
 ---
-In this workshop you will learn how to create a hybrid mobile application using your PhoneGap with HTML, JavaScript and CSS. you will learn about many best practices and performance optimization techniques along the way. 
 
-We'll be building a working Conference Application from scratch that manages a set of sessions and speakers. 
+## What you will build
+In this tutorial you will learn everything you need to take a hybrid application from scratch to app store lesson by lesson.
+This tutorial builds upon the previous [Beginning PhoneGap Workshop](hollyschinsky.github.io/phonegap-workshop/) where we built a basic 
+Conference application using no particular MVC framework. In this advanced version we will build an app using a more opinionated approach 
+with Cordova/Ionic/AngularJS and a Node/ExpressJS REST API backend data service.
 
-## What You Will Learn:
+![](images/app/app-overview.jpg)
 
-- How to create and build (compile and package) a PhoneGap project using the CLI (Command Line Interface).
+Throughout this tutorial you will be advised on how to handle different challenges and learn many useful tips. This app implements the 
+following features that you will learn to add in the following lessons: 
 
-- How to create a PhoneGap project using the PhoneGap Desktop App.
+## App Features 
+1. **Side Menu** - Side menu navigation with icons
+2. **Custom Status Bar** - Set the font and icons to white to match the title bar text
+3. **Custom Keyboard Accessory Bar** - keep accessory bar for drop-down options on sort
+4. **Login with Facebook, LinkedIn or Twitter** - in addition to a custom login option using OAuth
+5. **Profile** - display the user's profile based on the social media logged in with
+6. **Facebook integration** - using a non-plugin approach
+7. **Add to native calendar** - easily add a session to your native calendar with all session details
+8. **Favorites Management** - add to favorites / remove from favorites by tapping heart again or via the Favorites menu option list manager
+9. **Swipe to share from list**
+10. **Share with native sharing system on device**
+11. **Uses native notifications/dialogs**
+12. **Toast-style alerts**
+13. **Modal login panel upon open**
+14. **Popover 'About' screen**
+15. **Sort options** - sort sessions by different criteria
+16. **Filter/Search** - Search all data with a search term
+17. **Handling offline**
+17. **Numerous AngularJS directives and patterns used including:**
+    -routing
+    -repeat
+    -ngSwitch
+    -ngShow
+    -ngHide
+    -ngClass
+    -ngClick    
+ 
+## Plugins
+The following plugins will be added along the way to help provide the above features:
 
-- How to test a PhoneGap project using the PhoneGap Developer App on your mobile device.
+1. Social Share Plugin 
+2. Calendar Plugin
+3. Toast Notification Plugin
+4. Status Bar Plugin
+5. Keyboard Plugin
+6. Device Plugin
+7. InAppBrowser (for social media OAuth)
+8. Console Plugin
+9. NetworkInformation/Connection Plugin
 
-- How to use different data storage strategies.
+## Other Skills You Will Learn
+1. Setting icons and splash screens
+2. Debugging with Safari, Weinre and more
+3. Testing with the PhoneGap Developer App
+4. App Store Submission Tips
+5. Using Google font libraries
+6. How to setup OAuth.io with your social media accounts
 
-- How to build an application using a single-page architecture and HTML templates.
-
-- How to handle specific mobile challenges such as touch events, scrolling, styling, page transitions, etc.
-
-- How to use several PhoneGap APIs via plugins.
-
+>The plugin details will be covered along the way. Take a look at the [Official Cordova Plugin Registry](http://plugins.cordova.io) here to explore further as well. 
 
 ## Requirements
 
@@ -32,24 +73,23 @@ We'll be building a working Conference Application from scratch that manages a s
 >A mobile device or a Mobile SDK is **not** a requirement for this tutorial. You will able to test your application in the browser or with the PhoneGap Developer App with some limitations. If you want the full support of the native APIs then you will need the mobile SDK for that platform (iOS SDK, Android SDK, etc.) installed on your system. 
 
 
-
 ## Issues
 
-- Please create an issue [here](https://github.com/ccoenraets/apache-cordova-tutorial/issues) if you run
-into any problem or if you have a suggestion to improve this workshop.
+- Please create an issue [here](https://github.com/hollyschinsky/ConferenceTracker/issues) if you run
+into any problem or have a suggestion to improve this workshop.
 
-- You can also use the Comments section at the bottom of each module to ask a question or report a problem.
+- You can also use the *Comments* section at the bottom of each lesson to ask a question or report a problem.
 
-- You can contact me on Twitter:
+- You could also contact me on Twitter:
 
-    <a href="https://twitter.com/ccoenraets" class="twitter-follow-button" data-show-count="true" 
+    <a href="https://twitter.com/devgirlfl" class="twitter-follow-button" data-show-count="true" 
     data-size="large" data-lang="en">Follow 
-    @ccoenraets</a>
+    @devgirlfl</a>
     <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 
 <div class="row" style="margin-top:40px;">
 <div class="col-sm-12">
-<a href="create-cordova-project.html" class="btn btn-default pull-right">Next <i class="glyphicon
+<a href="install-ionic.html" class="btn btn-default pull-right">Next <i class="glyphicon
 glyphicon-chevron-right"></i></a>
 </div>
 </div>
