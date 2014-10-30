@@ -1,4 +1,5 @@
-var app = angular.module('conference', ['ionic', 'conference.controllers'])
+var app = angular.module('conference', ['ionic', 'conference.AppCtrl', 'conference.SessionsCtrl', 'conference.SessionCtrl',
+    'conference.FavoritesCtrl', 'conference.ProfileCtrl'])
 
     .run(function($ionicPlatform) {
         $ionicPlatform.ready(function() {
@@ -31,7 +32,7 @@ var app = angular.module('conference', ['ionic', 'conference.controllers'])
 
 .config(function($stateProvider, $urlRouterProvider) {
   //Facebook integration - Register your app and get your App ID from http://developer.facebook.com
-  openFB.init({appId: '443262072480898'});
+  openFB.init({appId: 'yourappid'});
 
   $stateProvider
     .state('app.profile', {
