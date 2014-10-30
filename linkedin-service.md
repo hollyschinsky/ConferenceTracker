@@ -9,4 +9,4 @@ title: Module 12&#58;  Integration With LinkedIn
 ![](images/app/linkedin-toast.png)
 
 
-**TODO**
+**TODO - Complete the writeup and code samples from app**

@@ -219,6 +219,9 @@ share function:
  
 2. Run and test your application on an iOS or Android device or emulator 
 
+
+**TODO - This is the version from the basic [Ionic-Tutorial](http://ccoenraets.github.io/ionic-tutorial/), needs to be updated for this tutorial ** 
+
 <div class="row" style="margin-top:40px;">
 <div class="col-sm-12">
 <a href="build-ionic-project.html" class="btn btn-default"><i class="glyphicon glyphicon-chevron-left"></i> 

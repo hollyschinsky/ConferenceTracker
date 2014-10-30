@@ -11,4 +11,4 @@ title: Module 11&#58;  Integration With Twitter
 ![](images/app/twitter-logout.png)
 
 
-**TODO**
+**TODO - Complete the writeup and code samples from app**

@@ -9,3 +9,4 @@ title: Module 15&#58; Create a login modal
 ## Triggered from side menu
 ![](images/app/side-menu.png)
 
+**TODO - Complete the writeup and code samples from app**

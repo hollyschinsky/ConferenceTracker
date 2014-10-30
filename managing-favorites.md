@@ -5,4 +5,4 @@
  ![](images/app/session-faves.png)![](images/app/native-toast.png)![](images/app/item-delete.png)
  
  
-*TODO**
+**TODO - Complete the writeup and code samples from app**

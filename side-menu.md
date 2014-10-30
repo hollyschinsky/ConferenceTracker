@@ -4,4 +4,4 @@ title: Module 17&#58; Customizing Side Menu
 ---
 ![](images/app/side-menu.png)
 
-**TODO**
+**TODO - Complete the writeup and code samples from app**
