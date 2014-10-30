@@ -76,16 +76,29 @@ li > ul > li {
     border-top: solid 1px #eee;
 }
 
+/*blockquote {*/
+    /*padding: 15px;*/
+    /*margin-bottom: 20px;*/
+    /*border: 1px solid transparent;*/
+    /*border-radius: 4px;*/
+    /*color: #31708f;*/
+    /*background-color: #d9edf7;*/
+    /*border-color: #bce8f1;*/
+/*}*/
+
 blockquote {
     padding: 15px;
     margin-bottom: 20px;
     border: 1px solid transparent;
     border-radius: 4px;
-    color: #31708f;
+    /*color: #31708f;
     background-color: #d9edf7;
-    border-color: #bce8f1;
+    border-color: #bce8f1;*/
+    /*color: #ffffff;*/
+    color: rgb(236, 236, 236);
+    background-color: #2d3033;
+    border-color: rgb(210, 209, 210);
 }
-
 h2 {
     font-size: 24px;
     border-bottom: solid 1px #EEE;
