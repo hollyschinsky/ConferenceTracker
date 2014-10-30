@@ -8,11 +8,11 @@ In this section, we add the ability to share the session details through the dev
 1. Add the social sharing plugin to your project:
 
     ```
-    $ cordova plugin add https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin/
+    $ ionic plugin add https://github.com/EddyVerbruggen/SocialSharing-PhoneGap-Plugin/
     
     ```
 
-1. In **SessionView.html**, wire the share tab to the *shareNative* function in the controllers.js via ng-click:
+1. In **session.html**, wire the share tab to the *shareNative* function in the controllers.js via ng-click:
 
     ```
    <a class="tab-item" ng-click="shareNative()">
@@ -20,7 +20,7 @@ In this section, we add the ability to share the session details through the dev
     </a>
     ```
 
-1. Open **controllers.js** and define the *shareNative* function to the sessionsCtrl as follows:
+1. Open **controllers.js** and define the *shareNative* function to the sessionCtrl as follows:
 
     ```
     $scope.shareNative = function() {

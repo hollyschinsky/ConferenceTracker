@@ -8,58 +8,49 @@ In this section, we add the ability to add a session to the native calendar on t
 1. Add this calendar plugin to your project:
 
     ```
-    $ cordova plugin add https://github.com/EddyVerbruggen/Calendar-PhoneGap-Plugin.git
+    $ ionic plugin add https://github.com/EddyVerbruggen/Calendar-PhoneGap-Plugin.git
     
     ```
 
-2. In **index.html**, add the following tab to the tab-bar *session-tpl* template:
+2. In **index.html**, wire the calendar item in the session.html template to the **addToCalendar** function such as:
 
     ```
-    <div class="addBtn tab-item">
-        <span class="icon icon-plus"></span>
-        <span class="tab-label">Add</span>
-    </div>
+   <p>{{session.room}} | {{session.time}}
+           <a class="tab-item addCal" ng-click="addToCalendar()">
+           <i class="icon ion-calendar" style="font-size: 16px">
+               Add</i></a></button>
+    </p>
     ```
 
-3. In the **initialize()** function of *SessionView*, register an event listener for the click event of the *addBtn* tab.
+4. Open **controllers.js** and define the *shareNative* function to the **sessionCtrl** as follows:
 
     ```
-    this.$el.on('click', '.addBtn', this.addToCalendar);
-    ```
-
-    >Make sure you add this line as the last line of the **initialize()** function (after this.$el is assigned).
-
-4. While in *SessionView*, define the *addToCalendar* event handler as follows:
-
-    ```
-    this.addToCalendar = function() {
-        if (window.plugins.calendar) {
-            var hour = session.time.substring(0,session.time.indexOf(':'));
-            if (session.time.indexOf("pm")>-1)
+    $scope.addToCalendar = function() {
+        if (window.plugins && window.plugins.calendar) {
+            var hour = $scope.session.time.substring(0,$scope.session.time.indexOf(':'));
+            if ($scope.session.time.indexOf("pm")>-1)
                 hour = parseInt(hour)+12;
-    
-            var startDate = new Date(2014,9,23,hour,00,00); //set to PG Day workshop date
+            var today = new Date();
+            console.log("Date year" + today.getFullYear() + " mo " + today.getMonth()+ " day " + today.getDate());
+            var startDate = new Date(today.getFullYear(),today.getMonth(),today.getDate(),hour,00,00);
             var endDate = new Date();
             endDate.setTime(startDate.getTime() + 3600000);//one hour
-    
-            var calSuccess = function (message) {
-                alert(session.title + " has been added to your calendar.");
-            };
-            var calError = function (message) {
-                alert("Error: " + message);
-            };
-            window.plugins.calendar.createEvent(session.title, session.room, session.description, startDate, endDate,
-                function(){alert(session.title + " has been added to your calendar.");}, function (error) {
+
+            window.plugins.calendar.createEvent($scope.session.title, $scope.session.room, $scope.session.description, startDate, endDate,
+                function () {
+                    alert($scope.session.title + " has been added to your calendar.");
+                },
+                function (error) {
                     console.log("Calendar fail " + error);
                 });
         }
-        else console.log("Calendar plugin not found");
-    }
+        else console.log("Calendar plugin not available.");
+    }    
     ```
 
 5. Test the Application
 
-When you click the add or plus tab, you should see a notification popup and a new entry added to your native calendar for today's date 
+When you click the add calendar icon, you should see a toast notification popup and a new entry added to your native calendar for today's date 
 at the session time such as below:
 
 ![](images/app/add-cal.png) ![](images/app/native-calendar-date.png) ![](images/app/native-calendar-entry.png)  
