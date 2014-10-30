@@ -53,10 +53,11 @@ The following plugins will be added along the way to help provide the above feat
 4. [Status Bar Plugin](https://github.com/apache/cordova-plugin-statusbar)
 5. [Keyboard Plugin](https://github.com/driftyco/ionic-plugins-keyboard)
 6. [Device Plugin](https://github.com/apache/cordova-plugin-device)
-7. [InAppBrowser/OAuth](https://github.com/oauth-io/oauth-phonegap) - for social media OAuth support 
-8. [Console Plugin](https://github.com/apache/cordova-plugin-console)
-9. [NetworkInformation/Connection Plugin](https://github.com/apache/cordova-plugin-network-information)
-10. [OAuth Plugin](https://github.com/oauth-io/oauth-phonegap)
+7. [Dialogs Plugin](https://github.com/apache/cordova-plugin-dialogs)
+8. [InAppBrowser/OAuth](https://github.com/oauth-io/oauth-phonegap) - for social media OAuth support 
+9. [Console Plugin](https://github.com/apache/cordova-plugin-console)
+10. [NetworkInformation/Connection Plugin](https://github.com/apache/cordova-plugin-network-information)
+11. [OAuth Plugin](https://github.com/oauth-io/oauth-phonegap)
 
 ## Other Skills You Will Learn
 1. Setting icons and splash screens
