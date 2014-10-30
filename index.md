@@ -36,6 +36,8 @@ following features that you will learn to add in the following lessons:
 17. **Numerous AngularJS directives and patterns used including:**
     -routing
     -repeat
+    -filtering
+    -sorting
     -ngSwitch
     -ngShow
     -ngHide
