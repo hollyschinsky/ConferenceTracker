@@ -7,7 +7,8 @@ title: PhoneGap Advanced Tutorial - Building a PhoneGap App with Ionic/AngularJS
 In this tutorial you will learn everything you need to take a hybrid application from scratch to app store lesson by lesson.
 This tutorial builds upon the previous [Beginning PhoneGap Workshop](hollyschinsky.github.io/phonegap-workshop/) where we built a basic 
 Conference application using no particular MVC framework. In this advanced version we will build an app using a more opinionated approach 
-with Cordova/Ionic/AngularJS and a Node/ExpressJS REST API backend data service.
+with Cordova/Ionic/AngularJS and a Node/ExpressJS REST API backend data service. Also check out the basic [Ionic Tutorial](ccoenraets.github.io/ionic-tutorial)
+by Christophe for more details. 
 
 ![](images/app/app-overview.jpg)
 
@@ -92,9 +93,9 @@ into any problem or have a suggestion to improve this workshop.
 
 - This tutorial also builds upon the basic [Ionic Tutorial](ccoenraets.github.io/ionic-tutorial) built by [Christophe Coenraets](http://coenraets.org). 
 
-## Disclaimer!!! 
-- This tutorial is still a work in progress and modules continuing to be written though [the GitHub project has the entire app](https://github.com/hollyschinsky/ConferenceTracker) and code to support the features mentioned above. Please continue, please continue to check
- back for more explanation of how each feature was implemented specifically as I'm working on adding the details asap.   
+## Disclaimer 
+- This tutorial is still a **work in progress** and modules are being updated. The [GitHub project has the entire app](https://github.com/hollyschinsky/ConferenceTracker) and code to support the features mentioned above, however, in the meantime. 
+Please continue, please continue to check back for more details on each module and how each feature was implemented as I'm working on adding the details asap.   
 
 <div class="row" style="margin-top:40px;">
 <div class="col-sm-12">
